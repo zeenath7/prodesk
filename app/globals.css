@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+body { @apply bg-white text-slate-700 antialiased font-sans; }
+h1, h2, h3 { @apply font-display text-ink; }
+
+[data-scroll-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes scroll-reveal {
+  from {
+    opacity: 0.92;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.is-revealed {
+  animation: scroll-reveal 500ms ease-out both;
+}
+
+@layer components {
+  .container-x { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand; }
+  .btn-primary { @apply btn bg-brand text-white hover:bg-brand-dark; }
+  .btn-outline { @apply btn border border-slate-300 bg-white text-ink hover:border-ink; }
+  .input { @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand; }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .product-card { transition: transform 180ms ease, box-shadow 180ms ease; }
+  .product-card:hover { transform: translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .is-revealed { animation: none; }
+}
