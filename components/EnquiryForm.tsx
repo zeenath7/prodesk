@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useQuoteCart } from "./QuoteCartContext";
 import { company } from "@/data/company";
+import ProductPhoto from "@/components/ProductPhoto";
 
 export default function EnquiryForm() {
   const searchParams = useSearchParams();
@@ -193,11 +194,10 @@ export default function EnquiryForm() {
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-2.5">
                           {item.image && (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={`/products/${item.image}`}
-                              alt={item.productName}
-                              className="h-9 w-9 object-contain rounded border border-slate-100 p-0.5 shrink-0"
+                            <ProductPhoto
+                              slug={item.productSlug}
+                              name={item.productName}
+                              className="h-9 w-9 shrink-0 rounded border border-slate-100"
                             />
                           )}
                           <div>

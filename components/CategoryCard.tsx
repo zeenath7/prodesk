@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { Category } from "@/types";
 import { getProductsByCategory, products as allProducts } from "@/data/catalog";
+import ProductPhoto from "@/components/ProductPhoto";
 
 const representativeProductSlugs: Record<string, string> = {
-  "lamination-pouch": "cd-pouch",
+  "lamination-pouch": "lamination-pouch",
   boards: "glass-board",
   rolls: "embossed-rolls",
 };
@@ -24,12 +25,10 @@ export default function CategoryCard({ category }: { category: Category }) {
       {/* Category Image */}
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-slate-50 p-3 flex items-center justify-center border border-slate-100">
         {imageProduct ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={`/products/${imageProduct.image}`}
-            alt={imageProduct.name}
-            loading="lazy"
-            className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+          <ProductPhoto
+            slug={imageProduct.slug}
+            name={imageProduct.name}
+            className="absolute inset-[8%] transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
           <div className="text-xs text-slate-400">Category</div>

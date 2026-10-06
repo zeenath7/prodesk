@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { Search, X, ArrowRight, CornerDownLeft, Package } from "lucide-react";
 import { products, getCategory } from "@/data/catalog";
+import ProductPhoto from "@/components/ProductPhoto";
 import type { Product } from "@/types";
 
 interface SearchModalProps {
@@ -153,12 +154,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-slate-100 bg-white p-1">
                         {product.image ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={`/products/${product.image}`}
-                            alt={product.name}
-                            className="h-full w-full object-contain"
-                          />
+                          <ProductPhoto slug={product.slug} name={product.name} className="h-full w-full" />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center text-xs text-slate-400">
                             P

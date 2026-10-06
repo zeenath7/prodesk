@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X, Trash2, Plus, Minus, Send, FileText, ShoppingBag, ArrowRight } from "lucide-react";
 import { useQuoteCart } from "./QuoteCartContext";
 import { company } from "@/data/company";
+import ProductPhoto from "@/components/ProductPhoto";
 
 export default function QuoteDrawer() {
   const { items, removeItem, updateQuantity, clearCart, isDrawerOpen, closeDrawer, totalCount } =
@@ -121,12 +122,7 @@ export default function QuoteDrawer() {
                 >
                   {item.image ? (
                     <div className="h-16 w-16 shrink-0 overflow-hidden rounded-md border border-slate-100 bg-slate-50 p-1">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={`/products/${item.image}`}
-                        alt={item.productName}
-                        className="h-full w-full object-contain"
-                      />
+                      <ProductPhoto slug={item.productSlug} name={item.productName} className="h-full w-full rounded-sm" />
                     </div>
                   ) : (
                     <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-400 text-xs">

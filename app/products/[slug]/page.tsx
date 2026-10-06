@@ -8,6 +8,7 @@ import {
 import ProductCard from "@/components/ProductCard";
 import ProductDetailActions from "@/components/ProductDetailActions";
 import ProductItemsTable from "@/components/ProductItemsTable";
+import ProductPhoto from "@/components/ProductPhoto";
 import { products, getCategory } from "@/data/catalog";
 import { formatPrice } from "@/lib/utils";
 
@@ -62,17 +63,8 @@ export default async function ProductPage({
         <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
           {/* Left Column: Product Photo */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-6 flex items-center justify-center min-h-[340px]">
-              {p.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={`/products/${p.image}`}
-                  alt={p.name}
-                  className="max-h-[360px] w-full object-contain"
-                />
-              ) : (
-                <div className="text-xs text-slate-400">No image available</div>
-              )}
+            <div className="relative aspect-square overflow-hidden rounded-xl border border-slate-200 bg-white">
+              <ProductPhoto slug={p.slug} name={p.name} className="absolute inset-0" />
 
               {p.brand && (
                 <span className="absolute top-3 left-3 rounded bg-white px-2 py-0.5 text-xs font-bold text-slate-800 border border-slate-200 shadow-2xs">
@@ -84,6 +76,9 @@ export default async function ProductPage({
                 {p.availability || "In Stock"}
               </span>
             </div>
+            <p className="text-xs leading-relaxed text-slate-500">
+              Representative product image. Packaging, color and finish may vary by size or model.
+            </p>
 
             {/* Official Catalogue Reference */}
             {p.tableImage && (

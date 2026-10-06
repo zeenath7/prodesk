@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Plus, Check } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { getCategory } from "@/data/catalog";
+import ProductPhoto from "@/components/ProductPhoto";
 import type { Product } from "@/types";
 import { useQuoteCart } from "./QuoteCartContext";
 
@@ -41,17 +42,11 @@ export default function ProductCard({ product: p }: { product: Product }) {
           href={`/products/${p.slug}`}
           className="relative block aspect-square w-full overflow-hidden rounded-lg bg-slate-50 p-4 border border-slate-100 flex items-center justify-center"
         >
-          {p.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={`/products/${p.image}`}
-              alt={p.name}
-              loading="lazy"
-              className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-            />
-          ) : (
-            <div className="text-xs text-slate-400">No Image</div>
-          )}
+          <ProductPhoto
+            slug={p.slug}
+            name={p.name}
+            className="absolute inset-0 transition-transform duration-300 group-hover:scale-105"
+          />
 
           {/* Top Brand Pill if available */}
           {p.brand && (
