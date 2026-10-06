@@ -2,44 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
-html { scroll-behavior: smooth; }
-body { @apply bg-white text-slate-700 antialiased font-sans; }
-h1, h2, h3 { @apply font-display text-ink; }
-
-[data-scroll-reveal] {
-  opacity: 1;
-  transform: none;
+html {
+  scroll-behavior: smooth;
 }
 
-@keyframes scroll-reveal {
-  from {
-    opacity: 0.92;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+body {
+  @apply bg-slate-50 text-slate-800 antialiased font-sans;
 }
 
-.is-revealed {
-  animation: scroll-reveal 500ms ease-out both;
+h1, h2, h3, h4 {
+  @apply font-sans font-bold text-slate-900 tracking-tight;
 }
 
-@layer components {
-  .container-x { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand; }
-  .btn-primary { @apply btn bg-brand text-white hover:bg-brand-dark; }
-  .btn-outline { @apply btn border border-slate-300 bg-white text-ink hover:border-ink; }
-  .input { @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand; }
+::selection {
+  @apply bg-brand text-white;
 }
 
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .product-card { transition: transform 180ms ease, box-shadow 180ms ease; }
-  .product-card:hover { transform: translateY(-2px); }
+* {
+  scrollbar-color: rgb(148 163 184) transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .is-revealed { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .btn {
+    @apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
+  }
+  .btn-primary {
+    @apply btn bg-brand text-white shadow-xs hover:bg-brand-dark active:scale-[0.99];
+  }
+  .btn-outline {
+    @apply btn border border-slate-300 bg-white text-slate-800 shadow-2xs hover:border-slate-400 hover:bg-slate-50 active:scale-[0.99];
+  }
+  .input {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/15 transition-all;
+  }
+  .admin-nav {
+    @apply flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-brand;
+  }
+  .admin-nav-active {
+    @apply bg-brand-soft text-brand font-semibold;
+  }
+  .admin-action {
+    @apply inline-flex min-h-9 items-center justify-center gap-1.5 rounded-lg border border-slate-200 px-3 text-xs font-medium text-slate-800 transition-colors hover:border-brand hover:text-brand;
+  }
+  .admin-action-danger {
+    @apply px-2.5 text-slate-500 hover:border-red-200 hover:text-red-600;
+  }
+  .admin-label {
+    @apply text-xs font-bold uppercase tracking-wider text-slate-700;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .product-card, .surface-card {
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+  .product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -4px rgb(15 23 42 / 0.08);
+  }
+  .surface-card:hover {
+    border-color: rgb(203 213 225);
+    box-shadow: 0 8px 20px -4px rgb(15 23 42 / 0.08);
+  }
 }

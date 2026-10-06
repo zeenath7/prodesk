@@ -1,89 +1,216 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MessageCircle } from "lucide-react";
-import Placeholder from "@/components/Placeholder";
+import {
+  ChevronRight,
+  FileSpreadsheet,
+  Check,
+} from "lucide-react";
 import ProductCard from "@/components/ProductCard";
+import ProductDetailActions from "@/components/ProductDetailActions";
+import ProductItemsTable from "@/components/ProductItemsTable";
 import { products, getCategory } from "@/data/catalog";
-import { formatPrice, waLink } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 
-export function generateStaticParams() { return products.map((p) => ({ slug: p.slug })); }
+export function generateStaticParams() {
+  return products.map((p) => ({ slug: p.slug }));
+}
 
-const dash = (v: string) => (v && v.replace(/\*/g, "") ? v : "—");
-
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const p = products.find((x) => x.slug === slug);
   if (!p) notFound();
+
   const category = getCategory(p.category);
-  const related = products.filter((x) => x.category === p.category && x.slug !== p.slug).slice(0, 4);
+  const related = products
+    .filter((x) => x.category === p.category && x.slug !== p.slug)
+    .slice(0, 4);
   const items = p.items ?? [];
 
   return (
-    <main className="container-x py-12">
-      <nav className="mb-6 text-sm text-slate-500">
-        <Link href="/" className="hover:text-brand">Home</Link> / <Link href={`/categories/${p.category}`} className="hover:text-brand">{category?.name}</Link> / <span className="text-ink">{p.name}</span>
-      </nav>
+    <main className="min-h-screen bg-white py-8 sm:py-10">
+      <div className="container-x">
+        {/* Breadcrumb Navigation */}
+        <nav
+          aria-label="Breadcrumb"
+          className="mb-6 flex flex-wrap items-center gap-1.5 text-xs text-slate-500"
+        >
+          <Link href="/" className="hover:text-brand transition-colors">
+            Home
+          </Link>
+          <ChevronRight className="h-3 w-3 text-slate-300" />
+          <Link href="/products" className="hover:text-brand transition-colors">
+            Catalogue
+          </Link>
+          <ChevronRight className="h-3 w-3 text-slate-300" />
+          <Link
+            href={`/categories/${p.category}`}
+            className="hover:text-brand transition-colors"
+          >
+            {category?.name || p.category}
+          </Link>
+          <ChevronRight className="h-3 w-3 text-slate-300" />
+          <span className="font-semibold text-slate-800 truncate max-w-[240px] sm:max-w-none">
+            {p.name}
+          </span>
+        </nav>
 
-      <div className="grid gap-12 lg:grid-cols-2">
-        <div className="order-2 rounded-md border border-slate-200 bg-white p-4 lg:order-1">
-          {p.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={`/products/${p.image}`} alt={p.name} className="aspect-square w-full object-contain" />
-          ) : (
-            <Placeholder icon="Package" className="aspect-square" />
-          )}
-        </div>
-        <div className="order-1 lg:order-2">
-          <p className="text-sm text-slate-500">{[p.brand, category?.name].filter(Boolean).join(" · ")}</p>
-          <h1 className="mt-2 text-4xl font-semibold tracking-tight">{p.name}</h1>
-          {items.length > 0 && <p className="mt-3 text-slate-600">{items.length} {items.length === 1 ? "item" : "items"} available in this range.</p>}
-          <p className="mt-6 text-2xl font-semibold text-ink">{formatPrice(p.price)}</p>
-          <p className="mt-1 text-sm text-emerald-700">{p.availability}</p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link href={`/enquiry?product=${encodeURIComponent(p.name)}`} className="btn-primary">Add to Enquiry</Link>
-            <a href={waLink(`Hello ProDesk, I would like to enquire about ${p.name}.`)} className="btn-outline"><MessageCircle className="h-4 w-4" />WhatsApp Enquiry</a>
+        {/* Product Overview Section */}
+        <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
+          {/* Left Column: Product Photo */}
+          <div className="lg:col-span-5 space-y-4">
+            <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-6 flex items-center justify-center min-h-[340px]">
+              {p.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={`/products/${p.image}`}
+                  alt={p.name}
+                  className="max-h-[360px] w-full object-contain"
+                />
+              ) : (
+                <div className="text-xs text-slate-400">No image available</div>
+              )}
+
+              {p.brand && (
+                <span className="absolute top-3 left-3 rounded bg-white px-2 py-0.5 text-xs font-bold text-slate-800 border border-slate-200 shadow-2xs">
+                  {p.brand}
+                </span>
+              )}
+
+              <span className="absolute top-3 right-3 rounded bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-800 border border-emerald-200">
+                {p.availability || "In Stock"}
+              </span>
+            </div>
+
+            {/* Official Catalogue Reference */}
+            {p.tableImage && (
+              <details className="rounded-lg border border-slate-200 bg-slate-50 p-3.5 text-xs">
+                <summary className="font-semibold text-brand cursor-pointer flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <FileSpreadsheet className="h-4 w-4" />
+                    <span>View Official Catalogue Table</span>
+                  </span>
+                  <span>▼</span>
+                </summary>
+                <div className="mt-3 pt-3 border-t border-slate-200">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`/tables/${p.tableImage}`}
+                    alt={`${p.name} specifications table`}
+                    className="w-full rounded border border-slate-200"
+                    loading="lazy"
+                  />
+                  <p className="mt-1 text-[11px] text-slate-500">
+                    Source: Blue Crystal / Super Deal Saudi Catalogue.
+                  </p>
+                </div>
+              </details>
+            )}
+          </div>
+
+          {/* Right Column: Product Details & Quote Actions */}
+          <div className="lg:col-span-7 space-y-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                {category?.name || p.category} {p.brand ? `· ${p.brand}` : ""}
+              </p>
+
+              <h1 className="mt-1 text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                {p.name}
+              </h1>
+
+              {items.length > 0 && (
+                <p className="mt-2 text-xs sm:text-sm text-slate-600">
+                  Available in <strong>{items.length}</strong> sizes and item specifications below.
+                </p>
+              )}
+            </div>
+
+            {/* Wholesale Pricing Indicator */}
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 flex items-center justify-between">
+              <div>
+                <p className="text-xs text-slate-500 font-medium">Pricing Status</p>
+                <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">
+                  {formatPrice(p.price)}
+                </p>
+              </div>
+              <span className="rounded bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 border border-slate-200">
+                Master Carton &amp; Bulk Rates
+              </span>
+            </div>
+
+            {/* Quantity and Quote Basket Actions */}
+            <ProductDetailActions product={p} />
+
+            {/* Supply Assurances */}
+            <div className="pt-5 border-t border-slate-200 grid grid-cols-2 gap-2.5 text-xs text-slate-700 font-medium">
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-brand shrink-0" />
+                <span>Original Brand Agency Quality</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-brand shrink-0" />
+                <span>Al Malaz Showrooms in Riyadh</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-brand shrink-0" />
+                <span>Official ZATCA VAT Invoices</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-brand shrink-0" />
+                <span>Bulk Carton &amp; Pallet Logistics</span>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Item Specification Table */}
+        {items.length > 0 && (
+          <section className="mt-12 pt-10 border-t border-slate-200">
+            <div className="mb-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
+              <div>
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+                  Available Sizes &amp; Packaging Specifications
+                </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Select your required item codes to add them to your wholesale quote request.
+                </p>
+              </div>
+              <span className="text-xs font-semibold text-slate-600">
+                {items.length} Specifications
+              </span>
+            </div>
+
+            <ProductItemsTable product={p} items={items} />
+          </section>
+        )}
+
+        {/* Related Products */}
+        {related.length > 0 && (
+          <section className="mt-14 pt-10 border-t border-slate-200">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-slate-900">
+                Related in {category?.name || "Category"}
+              </h2>
+              <Link
+                href={`/categories/${p.category}`}
+                className="text-xs font-bold text-brand hover:underline"
+              >
+                View Category →
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+              {related.map((r) => (
+                <ProductCard key={r.slug} product={r} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
-
-      {items.length > 0 && (
-        <section data-scroll-reveal className="mt-16">
-          <h2 className="text-2xl font-semibold">Items &amp; specifications</h2>
-          <div className="mt-4 overflow-x-auto rounded-md border border-slate-200">
-            <table className="w-full min-w-[640px] text-left text-sm">
-              <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-                <tr><th className="px-4 py-3">Code</th><th className="px-4 py-3">Description</th><th className="px-4 py-3">Unit</th><th className="px-4 py-3">Box</th><th className="px-4 py-3">Ctn</th><th className="px-4 py-3"></th></tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {items.map((it, i) => (
-                  <tr key={i}>
-                    <td className="whitespace-nowrap px-4 py-3 font-medium text-ink">{it.code}</td>
-                    <td className="px-4 py-3">{it.description}</td>
-                    <td className="px-4 py-3">{dash(it.unit)}</td>
-                    <td className="px-4 py-3">{dash(it.box)}</td>
-                    <td className="px-4 py-3">{dash(it.ctn)}</td>
-                    <td className="px-4 py-3 text-right"><Link href={`/enquiry?product=${encodeURIComponent(`${p.name} ${it.code}`)}`} className="font-semibold text-brand hover:underline">Enquire</Link></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {p.tableImage && (
-            <details className="mt-4 text-sm">
-              <summary className="cursor-pointer font-medium text-brand">View original catalogue table</summary>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/tables/${p.tableImage}`} alt={`${p.name} catalogue table`} className="mt-3 w-full max-w-3xl rounded-md border border-slate-200" />
-            </details>
-          )}
-        </section>
-      )}
-
-      {related.length > 0 && (
-        <section data-scroll-reveal className="mt-16">
-          <h2 className="text-2xl font-semibold">Related Products</h2>
-          <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">{related.map((r) => <ProductCard key={r.slug} product={r} />)}</div>
-        </section>
-      )}
     </main>
   );
 }
