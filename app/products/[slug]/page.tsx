@@ -47,7 +47,7 @@ export default async function ProductPage({
           </Link>
           <ChevronRight className="h-3 w-3 text-slate-300" />
           <Link
-            href={`/categories/${p.category}`}
+            href={`/categories/${category?.slug ?? p.category}`}
             className="hover:text-brand transition-colors"
           >
             {category?.name || p.category}

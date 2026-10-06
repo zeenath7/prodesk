@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ChevronDown, LayoutGrid, Package, Search, SlidersHorizontal, X } from "lucide-react";
 import ProductCard from "./ProductCard";
-import { categories } from "@/data/catalog";
+import { categories, getCategory, getProductCategorySlug } from "@/data/catalog";
 import type { Product } from "@/types";
 
 interface Props {
@@ -27,7 +27,10 @@ export default function ProductGrid({
   const params = useSearchParams();
   const urlQ = params?.get("q") ?? initialQuery;
   const urlBrand = params?.get("brand") ?? initialBrand;
-  const urlCategory = params?.get("category") ?? initialCategory;
+  const categoryParam = params?.get("category");
+  const urlCategory = categoryParam
+    ? getCategory(categoryParam)?.slug ?? categoryParam
+    : initialCategory;
 
   const [q, setQ] = useState(urlQ);
   const [category, setCategory] = useState(urlCategory);
@@ -57,12 +60,17 @@ export default function ProductGrid({
 
   const counts = useMemo(() => {
     const map: Record<string, number> = {};
-    matched.forEach((p) => (map[p.category] = (map[p.category] ?? 0) + 1));
+    matched.forEach((p) => {
+      const categorySlug = getProductCategorySlug(p);
+      map[categorySlug] = (map[categorySlug] ?? 0) + 1;
+    });
     return map;
   }, [matched]);
 
   const list = useMemo(() => {
-    const out = category ? matched.filter((p) => p.category === category) : [...matched];
+    const out = category
+      ? matched.filter((p) => getProductCategorySlug(p) === category)
+      : [...matched];
     if (sort === "az") out.sort((a, b) => a.name.localeCompare(b.name));
     if (sort === "za") out.sort((a, b) => b.name.localeCompare(a.name));
     return out;

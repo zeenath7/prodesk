@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight, ArrowLeft, Layers, Tag } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
-import { categories, getCategory, products } from "@/data/catalog";
+import { categories, getCategory, getProductsByCategory } from "@/data/catalog";
 
 export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
@@ -18,7 +18,7 @@ export default async function CategoryPage({
   const cat = getCategory(slug);
   if (!cat) notFound();
 
-  const items = products.filter((p) => p.category === cat.slug);
+  const items = getProductsByCategory(cat.slug);
   const otherCategories = categories.filter((c) => c.slug !== cat.slug);
 
   return (

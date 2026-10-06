@@ -1,42 +1,33 @@
 import Link from "next/link";
 import type { Category } from "@/types";
-import { products } from "@/data/catalog";
+import { getProductsByCategory, products as allProducts } from "@/data/catalog";
 
-const categoryImages: Record<string, string> = {
-  "desktop-accessories": "binder-clips.jpg",
-  "lamination-pouch": "lamination-pouch.jpg",
-  "files-and-folders": "a4-box-file.jpg",
-  "office-machines": "paper-cutter.jpg",
-  "staples-and-removers": "staple-remover.jpg",
-  "boards": "magnetic-white-board.jpg",
-  "board-accessories": "double-sided-board-marker.jpg",
-  "paper-products": "a4-bristol-card.jpg",
-  "adhesive-products": "binding-tapes-duct-tape.jpg",
-  "writing-instruments": "hb-pencil.jpg",
-  "rolls": "border-rolls.jpg",
-  "name-card-holder": "name-badge-with-lanyard.jpg",
-  "binding-sheets": "a4-binding-sheet.jpg",
-  "cash-box-and-key-box": "cash-box.jpg",
-  "binding-comb-and-spine-bar": "binding-comb.jpg",
-  "id-pass": "acrylic-name-badge-with.jpg",
+const representativeProductSlugs: Record<string, string> = {
+  "lamination-pouch": "cd-pouch",
+  boards: "glass-board",
+  rolls: "embossed-rolls",
 };
 
 export default function CategoryCard({ category }: { category: Category }) {
-  const imageFile = categoryImages[category.slug];
-  const count = products.filter((p) => p.category === category.slug).length;
+  const products = getProductsByCategory(category.slug);
+  const representativeProduct = allProducts.find(
+    (product) => product.slug === representativeProductSlugs[category.slug],
+  );
+  const imageProduct = representativeProduct ?? products.find((product) => product.image);
+  const count = products.length;
 
   return (
     <Link
-      href={`/categories/${category.slug}`}
+      href={`/products?category=${category.slug}`}
       className="group flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-3 shadow-2xs transition-all hover:border-brand hover:shadow-xs"
     >
       {/* Category Image */}
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-slate-50 p-3 flex items-center justify-center border border-slate-100">
-        {imageFile ? (
+        {imageProduct ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={`/products/${imageFile}`}
-            alt={category.name}
+            src={`/products/${imageProduct.image}`}
+            alt={imageProduct.name}
             loading="lazy"
             className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
           />

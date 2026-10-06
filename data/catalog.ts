@@ -19,7 +19,7 @@ export const categories: Category[] = [
   { slug: "name-card-holder", name: "Name Card Holder", icon: "CreditCard", description: "Name card holders in different styles." },
   { slug: "binding-sheets", name: "Binding Sheets", icon: "BookOpen", description: "Embossed and PVC binding sheets." },
   { slug: "cash-box-and-key-box", name: "Cash Box & Key Box", icon: "Wallet", description: "Cash boxes, key boxes and key rings." },
-  { slug: "binding-comb-and-spine-bar", name: "Binding Comb & Spine Bar", icon: "Library", description: "Binding combs and spine bars." },
+  { slug: "spine-bar", name: "Spine Bar", icon: "Library", description: "Spine bars and binding combs." },
   { slug: "id-pass", name: "ID Pass", icon: "BadgeCheck", description: "ID card accessories and badges." },
 ];
 
@@ -208,4 +208,15 @@ export const products: Product[] = [
   {"slug": "double-sided-board-marker", "name": "Double Sided Magnetic Board With Magnet & Marker", "category": "boards", "brand": "Super Deal", "sku": "", "price": null, "availability": "In Stock", "description": "", "specs": {}, "image": "double-sided-board-marker.jpg", "tableImage": "double-sided-board-marker.jpg", "items": [{"code": "84303", "description": "DOUBLE SIDED MAGNETIC WHITE BOARD W/MAGNET & MARKER 30X40", "unit": "PCS", "box": "1", "ctn": "20"}, {"code": "84302", "description": "DOUBLE SIDED MAGNETIC WHITE BOARD W/MAGNET & MARKER 22.5X30", "unit": "PCS", "box": "1", "ctn": "20"}, {"code": "84301", "description": "DOUBLE SIDED MAGNETIC WHITE BOARD W/MAGNET & MARKER 20X30", "unit": "PCS", "box": "1", "ctn": "20"}, {"code": "84311", "description": "DOUBLE SIDED WHITE BOARD W/SLIM FRAME 20X30", "unit": "PCS", "box": "12", "ctn": "72"}, {"code": "84312", "description": "DOUBLE SIDED WHITE BOARD W/SLIM FRAME 25X35", "unit": "PCS", "box": "12", "ctn": "48"}, {"code": "84313", "description": "DOUBLE SIDED WHITE BOARD W/SLIM FRAME 30X40", "unit": "PCS", "box": "12", "ctn": "36"}]},
 ] as Product[];
 
-export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
+const categoryAliases: Record<string, string> = {
+  "binding-comb-and-spine-bar": "spine-bar",
+};
+
+export const getProductCategorySlug = (product: Pick<Product, "category">) =>
+  categoryAliases[product.category] ?? product.category;
+
+export const getProductsByCategory = (slug: string) =>
+  products.filter((product) => getProductCategorySlug(product) === slug);
+
+export const getCategory = (slug: string) =>
+  categories.find((category) => category.slug === (categoryAliases[slug] ?? slug));

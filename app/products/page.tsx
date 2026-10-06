@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { Package, Sparkles, ChevronRight, Layers } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
-import { products, categories } from "@/data/catalog";
+import { products, categories, getCategory, getProductsByCategory } from "@/data/catalog";
 
 export const metadata = {
   title: "All Products & Wholesale Catalogue (180+ Lines) | ProDesk Riyadh",
@@ -10,7 +10,18 @@ export const metadata = {
     "Browse ProDesk's complete commercial catalog of 180+ office stationery lines, filing systems, whiteboards, paper rolls, and desk organizers with bulk carton pricing in Saudi Arabia.",
 };
 
-export default function ProductsPage() {
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string | string[] }>;
+}) {
+  const { category: categoryParam } = await searchParams;
+  const categorySlug = Array.isArray(categoryParam) ? categoryParam[0] : categoryParam;
+  const selectedCategory = categorySlug ? getCategory(categorySlug) : undefined;
+  const selectedProducts = selectedCategory
+    ? getProductsByCategory(selectedCategory.slug)
+    : products;
+
   return (
     <main className="min-h-screen bg-slate-50/40">
       {/* Page Header */}
@@ -28,10 +39,14 @@ export default function ProductsPage() {
             <div>
               <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-soft border border-brand/20 px-3 py-1 text-xs font-bold text-brand mb-2">
                 <Layers className="h-3.5 w-3.5" />
-                <span>180+ Commercial Product Lines</span>
+                <span>
+                  {selectedCategory
+                    ? `${selectedProducts.length} Products in ${selectedCategory.name}`
+                    : `${products.length} Commercial Product Lines`}
+                </span>
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-ink">
-                Office &amp; Institutional Supplies Catalogue
+                {selectedCategory?.name ?? "Office & Institutional Supplies Catalogue"}
               </h1>
               <p className="mt-3 max-w-3xl text-sm sm:text-base text-slate-600 leading-relaxed">
                 Filter by category, search by specific item code (e.g. DE-108, 96621), or narrow down by brand. Add items directly to your Quote Basket for instant wholesale pricing.
@@ -74,7 +89,7 @@ export default function ProductsPage() {
             </div>
           }
         >
-          <ProductGrid products={products} />
+          <ProductGrid products={products} initialCategory={selectedCategory?.slug ?? ""} />
         </Suspense>
       </section>
     </main>
