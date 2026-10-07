@@ -4,13 +4,9 @@ import {
   Mail,
   MapPin,
   Clock,
-  MessageCircle,
   ShieldCheck,
-  Award,
-  ArrowRight,
 } from "lucide-react";
 import { company } from "@/data/company";
-import { waLink } from "@/lib/utils";
 
 const categoryLinks = [
   { label: "Files & Folders", href: "/categories/files-and-folders" },
@@ -26,44 +22,6 @@ const categoryLinks = [
 export default function Footer() {
   return (
     <footer className="bg-slate-950 text-slate-300 border-t border-slate-800">
-      {/* Top Banner: National Agency & Fast Quote */}
-      <div className="border-b border-slate-800/80 bg-slate-900/50 py-6 sm:py-8">
-        <div className="container-x flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/20 text-brand">
-              <Award className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-white">
-                Authorized National Distributor for Super Deal &amp; Delux
-              </p>
-              <p className="text-xs text-slate-400">
-                Supplying 180+ commercial stationery lines across Saudi Arabia.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <Link
-              href="/enquiry"
-              className="btn-primary !min-h-9 text-xs font-semibold"
-            >
-              <span>Request Wholesale Quote</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-            <a
-              href={waLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-9 items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors"
-            >
-              <MessageCircle className="h-3.5 w-3.5" />
-              <span>WhatsApp Sales</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
       {/* Main Footer Links */}
       <div className="container-x py-12">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">

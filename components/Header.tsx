@@ -64,7 +64,7 @@ export default function Header() {
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 text-slate-300 font-medium">
               <MapPin className="h-3.5 w-3.5 text-deal" />
-              <span>Riyadh, KSA · Al Malaz Showrooms (Talha Bin Malik St &amp; Al Hawari)</span>
+              <span>Riyadh, KSA </span>
             </span>
             <span className="hidden lg:flex items-center gap-1 text-slate-400">
               <Clock className="h-3.5 w-3.5" />
@@ -73,9 +73,6 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-5 text-xs">
-            <span className="hidden xl:inline text-slate-400">
-              National Agent: <strong className="text-white">Super Deal</strong> &amp; <strong className="text-white">Delux</strong>
-            </span>
             <a
               href={company.phoneHref}
               className="flex items-center gap-1.5 font-medium text-slate-200 hover:text-white transition-colors"
@@ -122,7 +119,7 @@ export default function Header() {
           {/* Embedded Real Search Bar (Desktop) */}
           <form
             onSubmit={handleSearch}
-            className="hidden min-w-0 max-w-xl flex-1 items-center rounded-lg border border-slate-300 bg-slate-50 px-1 py-1 transition-all focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/15 md:flex"
+            className="hidden w-[min(600px,40vw)] min-w-0 flex-none items-center rounded-lg border border-slate-300 bg-slate-50 px-1 py-1 transition-all focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/15 md:flex"
           >
             <Search className="ml-2.5 h-4 w-4 text-slate-400 shrink-0" />
             <input
@@ -215,11 +212,6 @@ export default function Header() {
                 }`}
               >
                 {item.label}
-                {item.badge && (
-                  <span className="ml-1.5 rounded-full bg-brand-soft px-1.5 py-0.2 text-[10px] text-brand">
-                    {item.badge}
-                  </span>
-                )}
               </Link>
             ))}
           </nav>

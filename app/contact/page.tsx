@@ -32,7 +32,7 @@ export default function ContactPage() {
             <span>Riyadh Commercial Hubs · Al Malaz</span>
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-ink">
-            Visit Our Showrooms or Contact Our Wholesale Desk
+            Visit Our Showrooms or Contact Us
           </h1>
           <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
             Conveniently located in the Al Malaz district of Riyadh with two dedicated distribution locations. Visit our sample showrooms, collect bulk carton orders, or speak directly with our account specialists.

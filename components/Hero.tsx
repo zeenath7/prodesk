@@ -28,7 +28,7 @@ export default function Hero() {
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
-              ProDesk Office Stationery supplies corporate offices, schools, universities, and commercial retailers across Saudi Arabia with dependable, bulk stationery. Authorized national distributor for <strong>Super Deal</strong> and <strong>Delux</strong>, alongside our in-house brand <strong>Azmak</strong>.
+              ProDesk supplies quality office and school stationery across Saudi Arabia, serving businesses, schools, universities, and retailers. Authorized distributor of <strong>Super Deal</strong> and <strong>Delux</strong>, with our in-house brand <strong>Azmak</strong>.
             </p>
 
             {/* Action Buttons */}
@@ -71,9 +71,9 @@ export default function Hero() {
           {/* Right Column: Grounded Professional Hero Image */}
           <div className="lg:col-span-5">
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white p-2 shadow-sm">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-slate-100">
+              <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-slate-100">
                 <Image
-                  src="/hero-stationery-home.jpg"
+                  src="/hero-stationery-home-v2.png"
                   alt="ProDesk office stationery products and warehouse inventory"
                   width={1200}
                   height={800}

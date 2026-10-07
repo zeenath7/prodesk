@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { Package, Sparkles, ChevronRight, Layers } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
-import { products, categories, getCategory, getProductsByCategory } from "@/data/catalog";
+import { products, getCategory, getProductsByCategory } from "@/data/catalog";
 
 export const metadata = {
   title: "All Products & Wholesale Catalogue (180+ Lines) | ProDesk Riyadh",
@@ -21,6 +21,10 @@ export default async function ProductsPage({
   const selectedProducts = selectedCategory
     ? getProductsByCategory(selectedCategory.slug)
     : products;
+  const selectedCategoryName =
+    selectedCategory?.name === "Lamination Pouch"
+      ? "Lamination Pouches"
+      : selectedCategory?.name;
 
   return (
     <main className="min-h-screen bg-slate-50/40">
@@ -41,15 +45,15 @@ export default async function ProductsPage({
                 <Layers className="h-3.5 w-3.5" />
                 <span>
                   {selectedCategory
-                    ? `${selectedProducts.length} Products in ${selectedCategory.name}`
-                    : `${products.length} Commercial Product Lines`}
+                    ? `${selectedProducts.length} Products in ${selectedCategoryName}`
+                    : "180+ products"}
                 </span>
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-ink">
-                {selectedCategory?.name ?? "Office & Institutional Supplies Catalogue"}
+                {selectedCategoryName ?? "Office & Institutional Supplies Catalogue"}
               </h1>
               <p className="mt-3 max-w-3xl text-sm sm:text-base text-slate-600 leading-relaxed">
-                Filter by category, search by specific item code (e.g. DE-108, 96621), or narrow down by brand. Add items directly to your Quote Basket for instant wholesale pricing.
+                Browse by category, search by item code, or filter by brand. Add products to your Quote Basket to request wholesale pricing.
               </p>
             </div>
 
@@ -62,21 +66,6 @@ export default async function ProductsPage({
             </div>
           </div>
 
-          {/* Quick Category Jump Bar */}
-          <div className="mt-6 flex flex-wrap gap-1.5 pt-4 border-t border-slate-200/80">
-            <span className="text-xs font-semibold text-slate-500 mr-1 self-center">
-              Quick jump:
-            </span>
-            {categories.slice(0, 8).map((cat) => (
-              <Link
-                key={cat.slug}
-                href={`/categories/${cat.slug}`}
-                className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-700 hover:border-brand hover:text-brand hover:bg-brand-soft/40 transition-colors shadow-2xs"
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -89,7 +78,7 @@ export default async function ProductsPage({
             </div>
           }
         >
-          <ProductGrid products={products} initialCategory={selectedCategory?.slug ?? ""} />
+          <ProductGrid products={products} initialCategory={selectedCategory?.slug ?? ""} cataloguePage />
         </Suspense>
       </section>
     </main>

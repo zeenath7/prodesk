@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   ChevronRight,
-  FileSpreadsheet,
   Check,
 } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
@@ -80,30 +79,6 @@ export default async function ProductPage({
               Representative product image. Packaging, color and finish may vary by size or model.
             </p>
 
-            {/* Official Catalogue Reference */}
-            {p.tableImage && (
-              <details className="rounded-lg border border-slate-200 bg-slate-50 p-3.5 text-xs">
-                <summary className="font-semibold text-brand cursor-pointer flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <FileSpreadsheet className="h-4 w-4" />
-                    <span>View Official Catalogue Table</span>
-                  </span>
-                  <span>▼</span>
-                </summary>
-                <div className="mt-3 pt-3 border-t border-slate-200">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`/tables/${p.tableImage}`}
-                    alt={`${p.name} specifications table`}
-                    className="w-full rounded border border-slate-200"
-                    loading="lazy"
-                  />
-                  <p className="mt-1 text-[11px] text-slate-500">
-                    Source: Blue Crystal / Super Deal Saudi Catalogue.
-                  </p>
-                </div>
-              </details>
-            )}
           </div>
 
           {/* Right Column: Product Details & Quote Actions */}
@@ -144,7 +119,7 @@ export default async function ProductPage({
             <div className="pt-5 border-t border-slate-200 grid grid-cols-2 gap-2.5 text-xs text-slate-700 font-medium">
               <div className="flex items-center gap-2">
                 <Check className="h-4 w-4 text-brand shrink-0" />
-                <span>Original Brand Agency Quality</span>
+                <span>Original Brand Quality</span>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="h-4 w-4 text-brand shrink-0" />

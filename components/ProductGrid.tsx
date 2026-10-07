@@ -13,6 +13,7 @@ interface Props {
   initialBrand?: string;
   initialQuery?: string;
   showFilters?: boolean;
+  cataloguePage?: boolean;
 }
 
 const PAGE_SIZE = 24;
@@ -23,6 +24,7 @@ export default function ProductGrid({
   initialBrand = "",
   initialQuery = "",
   showFilters = true,
+  cataloguePage = false,
 }: Props) {
   const params = useSearchParams();
   const urlQ = params?.get("q") ?? initialQuery;
@@ -76,7 +78,10 @@ export default function ProductGrid({
     return out;
   }, [matched, category, sort]);
 
+  const displayCategoryName = (name: string) =>
+    cataloguePage && name === "Lamination Pouch" ? "Lamination Pouches" : name;
   const activeName = categories.find((c) => c.slug === category)?.name;
+  const activeDisplayName = activeName ? displayCategoryName(activeName) : undefined;
   const reset = () => { setQ(""); setCategory(""); setBrand(""); setSort("popular"); };
 
   const grid = list.length === 0 ? (
@@ -108,7 +113,7 @@ export default function ProductGrid({
     <nav aria-label="Product categories" className="space-y-0.5">
       <CatButton active={!category} onClick={() => { setCategory(""); setDrawer(false); }} label="All products" count={matched.length} />
       {categories.map((c) => (
-        <CatButton key={c.slug} active={category === c.slug} onClick={() => { setCategory(c.slug); setDrawer(false); }} label={c.name} count={counts[c.slug] ?? 0} />
+        <CatButton key={c.slug} active={category === c.slug} onClick={() => { setCategory(c.slug); setDrawer(false); }} label={displayCategoryName(c.name)} count={counts[c.slug] ?? 0} />
       ))}
     </nav>
   );
@@ -153,11 +158,11 @@ export default function ProductGrid({
             <button type="button" onClick={() => setDrawer(true)} className="btn-outline !min-h-10 flex-1 gap-2 text-sm lg:hidden">
               <LayoutGrid className="h-4 w-4" /> Categories
             </button>
-            <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort products"
+            <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label={cataloguePage ? "Sort by" : "Sort products"}
               className="flex-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm focus:border-brand focus:outline-none sm:flex-none">
-              <option value="popular">Catalogue order</option>
-              <option value="az">Name A–Z</option>
-              <option value="za">Name Z–A</option>
+              <option value="popular">{cataloguePage ? "Featured" : "Catalogue order"}</option>
+              <option value="az">{cataloguePage ? "Name: A–Z" : "Name A–Z"}</option>
+              <option value="za">{cataloguePage ? "Name: Z–A" : "Name Z–A"}</option>
             </select>
           </div>
         </div>
@@ -165,7 +170,7 @@ export default function ProductGrid({
         {/* Result summary */}
         <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600">
           <SlidersHorizontal className="h-4 w-4 text-slate-400" />
-          <span><strong className="text-ink">{list.length}</strong> products{activeName ? <> in <strong className="text-ink">{activeName}</strong></> : null}</span>
+          <span><strong className="text-ink">{list.length}</strong> products{activeDisplayName ? <> in <strong className="text-ink">{activeDisplayName}</strong></> : null}</span>
           {brand && <span className="rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800">{brand}</span>}
           {(q || category || brand) && <button type="button" onClick={reset} className="text-xs font-semibold text-rose-600 hover:underline">Clear all</button>}
         </div>

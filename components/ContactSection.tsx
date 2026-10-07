@@ -76,7 +76,7 @@ export default function ContactSection() {
           <div className="flex items-center justify-between pb-4 border-b border-slate-100">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 text-amber-900 px-3 py-1 text-xs font-bold">
               <Building2 className="h-3.5 w-3.5" />
-              <span>Logistics &amp; Wholesale Branch 2</span>
+              <span>Logistics &amp; Wholesale Hub</span>
             </span>
             <span className="text-xs font-semibold text-slate-500">Bulk Cartons</span>
           </div>
@@ -181,10 +181,10 @@ export default function ContactSection() {
           <div className="mt-6 pt-5 border-t border-slate-100">
             <p className="text-xs text-slate-500">Official Distributor Portal:</p>
             <p className="font-semibold text-sm text-ink mt-0.5">
-              Associated with {company.associate}
+              Super Deal Distribution &amp; Brand Partner
             </p>
             <p className="text-xs text-brand font-medium mt-1">
-              Website: <a href={company.website} target="_blank" rel="noreferrer" className="underline">{company.website.replace(/^https?:\/\//, "")}</a>
+              Website: <a href="https://www.prodeskonline.com" target="_blank" rel="noreferrer" className="underline">www.prodeskonline.com</a>
             </p>
           </div>
         </div>

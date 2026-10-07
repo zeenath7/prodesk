@@ -11,7 +11,7 @@ const supplyServices = [
   { icon: Boxes, title: "Master carton wholesale", text: "Carton rates and volume price breaks for resellers, retail stores and contractors." },
   { icon: Building2, title: "Institutional accounts", text: "Procurement support for schools, universities, ministries and offices, with ZATCA invoicing." },
   { icon: Store, title: "Two Riyadh showrooms", text: "Inspect samples and collect urgent bulk orders in Al Malaz, Riyadh." },
-  { icon: Truck, title: "Kingdom-wide freight", text: "Dispatch across Riyadh, Eastern, Western and all other regions of Saudi Arabia." },
+  { icon: Truck, title: "Nationwide delivery", text: "Dispatch across Riyadh, Eastern, Western and all other regions of Saudi Arabia." },
 ];
 
 function Heading({ title, sub, href, link }: { title: string; sub?: string; href?: string; link?: string }) {
@@ -48,7 +48,7 @@ export default function Home() {
 
       {/* Brands */}
       <section id="brands" className="container-x scroll-mt-24">
-        <Heading title="Our brands" sub="National agent for Super Deal and Delux, plus our own brand Azmak." />
+        <Heading title="Our brands" sub="Official national distributor for Super Deal and Delux, plus our in-house brand Azmak." />
         <div className="mt-6 grid gap-5 sm:grid-cols-3">
           {brands.map((b) => <BrandCard key={b.name} brand={b} />)}
         </div>
@@ -71,7 +71,7 @@ export default function Home() {
             <p className="text-xs text-slate-600"><span className="font-bold text-slate-900">Have a tender or bill of quantities?</span> Send your list for bulk pricing.</p>
             <div className="flex items-center gap-3">
               <Link href="/enquiry" className="btn-primary !min-h-9 text-xs">Submit RFQ list</Link>
-              <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-outline !min-h-9 text-xs">WhatsApp wholesale desk</a>
+              <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-outline !min-h-9 text-xs">WhatsApp Wholesale Team</a>
             </div>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function Home() {
         <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-5">
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white p-2 shadow-xs">
-              <Image src="/aboutus.jpg" alt="ProDesk team and showroom" width={1200} height={800} sizes="(max-width: 1024px) 100vw, 40vw" className="h-full w-full rounded-lg object-cover" />
+              <Image src="/aboutus.png" alt="ProDesk team and showroom" width={1200} height={800} sizes="(max-width: 1024px) 100vw, 40vw" className="h-full w-full rounded-lg object-cover" />
             </div>
           </div>
           <div className="space-y-4 lg:col-span-7">
@@ -90,7 +90,7 @@ export default function Home() {
             <p className="text-sm leading-relaxed text-slate-600">Formerly Blue Crystal Stationery, ProDesk has grown over 15 years into a trusted commercial stationery supplier in Saudi Arabia. We are national distributors for <strong>Super Deal</strong> and <strong>Delux</strong> and make our own brand <strong>Azmak</strong>.</p>
             <div className="grid grid-cols-3 gap-4 border-t border-slate-200 pt-4 text-center sm:text-left">
               <div><p className="text-2xl font-extrabold text-slate-900 sm:text-3xl">15+</p><p className="mt-0.5 text-xs text-slate-500">Years in Saudi market</p></div>
-              <div><p className="text-2xl font-extrabold text-brand sm:text-3xl">{products.length}</p><p className="mt-0.5 text-xs text-slate-500">Catalogue products</p></div>
+              <div><p className="text-2xl font-extrabold text-brand sm:text-3xl">{products.length}</p><p className="mt-0.5 text-xs text-slate-500">Products</p></div>
               <div><p className="text-2xl font-extrabold text-emerald-700 sm:text-3xl">50K+</p><p className="mt-0.5 text-xs text-slate-500">Clients served</p></div>
             </div>
             <Link href="/contact" className="inline-flex items-center gap-1 text-sm font-bold text-brand hover:underline">Visit our two Riyadh showrooms <ArrowRight className="h-4 w-4" /></Link>
