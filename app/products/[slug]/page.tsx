@@ -9,6 +9,7 @@ import ProductDetailActions from "@/components/ProductDetailActions";
 import ProductItemsTable from "@/components/ProductItemsTable";
 import ProductPhoto, { getProductPhotoAsset } from "@/components/ProductPhoto";
 import { products, getCategory } from "@/data/catalog";
+import { getProductImageMap } from "@/lib/product-images";
 import { formatPrice } from "@/lib/utils";
 import type { Metadata } from "next";
 
@@ -27,6 +28,9 @@ export async function generateMetadata({
 
   const category = getCategory(product.category);
   const description = `View sizes, item codes, and wholesale quote details for ${product.name}${category ? ` in ${category.name.toLowerCase()}` : ""} from ProDesk Office Stationery in Riyadh.`;
+  const imageOverrides = await getProductImageMap();
+  const uploadedImage = imageOverrides[product.slug] ?? null;
+  const ogImage = uploadedImage ?? getProductPhotoAsset(product.slug);
 
   return {
     title: `${product.name} in Saudi Arabia | ProDesk`,
@@ -37,7 +41,7 @@ export async function generateMetadata({
       title: `${product.name} | ProDesk Office Stationery`,
       description,
       url: `https://prodeskonline.com/products/${product.slug}`,
-      images: [{ url: getProductPhotoAsset(product.slug), alt: product.name }],
+      images: [{ url: ogImage, alt: product.name }],
     },
   };
 }
@@ -56,6 +60,8 @@ export default async function ProductPage({
     .filter((x) => x.category === p.category && x.slug !== p.slug)
     .slice(0, 4);
   const items = p.items ?? [];
+  const imageOverrides = await getProductImageMap();
+  const uploadedImage = imageOverrides[p.slug] ?? null;
 
   return (
     <main className="min-h-screen bg-white py-8 sm:py-10">
@@ -90,7 +96,7 @@ export default async function ProductPage({
           {/* Left Column: Product Photo */}
           <div className="lg:col-span-5 space-y-4">
             <div className="relative aspect-square overflow-hidden rounded-xl border border-slate-200 bg-white">
-              <ProductPhoto slug={p.slug} name={p.name} className="absolute inset-0" />
+              <ProductPhoto slug={p.slug} name={p.name} src={uploadedImage} className="absolute inset-0" />
 
               {p.brand && (
                 <span className="absolute top-3 left-3 rounded bg-white px-2 py-0.5 text-xs font-bold text-slate-800 border border-slate-200 shadow-2xs">
@@ -202,7 +208,7 @@ export default async function ProductPage({
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
               {related.map((r) => (
-                <ProductCard key={r.slug} product={r} />
+                <ProductCard key={r.slug} product={r} imageUrl={imageOverrides[r.slug]} />
               ))}
             </div>
           </section>

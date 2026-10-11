@@ -41,10 +41,10 @@ export function getProductPhotoAsset(slug: string): string {
   return "/product-photography/" + assetSlug + ".webp";
 }
 
-export function getProductPhotoStyle(slug: string): CSSProperties {
+export function getProductPhotoStyle(slug: string, src?: string | null): CSSProperties {
   return {
     backgroundColor: "#fff",
-    backgroundImage: 'url("' + getProductPhotoAsset(slug) + '")',
+    backgroundImage: 'url("' + (src || getProductPhotoAsset(slug)) + '")',
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "contain",
@@ -55,17 +55,20 @@ export default function ProductPhoto({
   slug,
   name,
   className = "",
+  src = null,
 }: {
   slug: string;
   name: string;
   className?: string;
+  /** Uploaded image URL — takes precedence over the static slug asset. */
+  src?: string | null;
 }) {
   return (
     <div
       role="img"
       aria-label={"Representative product photo: " + name}
       className={className}
-      style={getProductPhotoStyle(slug)}
+      style={getProductPhotoStyle(slug, src)}
     />
   );
 }

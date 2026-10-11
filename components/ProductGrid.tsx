@@ -14,6 +14,8 @@ interface Props {
   initialQuery?: string;
   showFilters?: boolean;
   cataloguePage?: boolean;
+  /** slug -> uploaded image URL, resolved server-side from Neon. */
+  imageOverrides?: Record<string, string>;
 }
 
 const PAGE_SIZE = 24;
@@ -25,6 +27,7 @@ export default function ProductGrid({
   initialQuery = "",
   showFilters = true,
   cataloguePage = false,
+  imageOverrides = {},
 }: Props) {
   const params = useSearchParams();
   const urlQ = params?.get("q") ?? initialQuery;
@@ -94,7 +97,7 @@ export default function ProductGrid({
   ) : (
     <>
       <div className={`grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 ${showFilters ? "2xl:grid-cols-4" : "lg:grid-cols-4"}`}>
-        {list.slice(0, visible).map((p) => <ProductCard key={p.slug} product={p} />)}
+        {list.slice(0, visible).map((p) => <ProductCard key={p.slug} product={p} imageUrl={imageOverrides[p.slug]} />)}
       </div>
       {visible < list.length && (
         <div className="mt-8 flex flex-col items-center gap-3">

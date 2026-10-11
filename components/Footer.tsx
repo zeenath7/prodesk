@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { company } from "@/data/company";
 import { categories } from "@/data/catalog";
-import { PRODUCT_COUNT } from "@/lib/seo";
 
 export default function Footer() {
   return (
@@ -70,7 +69,7 @@ export default function Footer() {
             <ul className="space-y-1.5 text-xs">
               <li>
                 <Link href="/products" className="text-slate-400 hover:text-white transition-colors">
-                  All {PRODUCT_COUNT} Products
+                  All 180+ Products
                 </Link>
               </li>
               <li>

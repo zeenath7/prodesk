@@ -18,6 +18,18 @@ Edit company details in `data/company.ts` and products in `data/catalog.ts`.
 4. Set the same variables in the production deployment environment; never use
    `NEXT_PUBLIC_` for these values.
 
+## Admin product images
+
+In the Product Editor, the upload box next to "Product image filename" picks a
+JPEG/PNG/WebP file (max 4 MB) from your computer, shows a preview, and on
+Upload stores the bytes in **Vercel Blob** and the `slug → image_url` reference
+in the Neon **`product_images`** table (`lib/product-images-schema.sql`).
+Replace uploads a new file (old blob deleted); Remove deletes the reference
+(public pages fall back to the default static photo). Only signed-in admins can
+upload — the API checks the admin session cookie and returns 401 otherwise.
+Without `BLOB_READ_WRITE_TOKEN` + `DATABASE_URL` the API returns 503 with the
+setup hint instead of silently storing locally.
+
 ## Saudi SEO
 
 - Canonical domain `https://prodeskonline.com`, `en-SA` language targeting,

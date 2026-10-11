@@ -9,7 +9,7 @@ import ProductPhoto from "@/components/ProductPhoto";
 import type { Product } from "@/types";
 import { useQuoteCart } from "./QuoteCartContext";
 
-export default function ProductCard({ product: p }: { product: Product }) {
+export default function ProductCard({ product: p, imageUrl }: { product: Product; imageUrl?: string | null }) {
   const { addItem } = useQuoteCart();
   const [justAdded, setJustAdded] = useState(false);
   const n = p.items?.length ?? 0;
@@ -45,6 +45,7 @@ export default function ProductCard({ product: p }: { product: Product }) {
           <ProductPhoto
             slug={p.slug}
             name={p.name}
+            src={imageUrl ?? null}
             className="absolute inset-0 transition-transform duration-300 group-hover:scale-105"
           />
 

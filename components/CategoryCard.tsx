@@ -9,7 +9,7 @@ const representativeProductSlugs: Record<string, string> = {
   rolls: "embossed-rolls",
 };
 
-export default function CategoryCard({ category }: { category: Category }) {
+export default function CategoryCard({ category, imageOverrides = {} }: { category: Category; imageOverrides?: Record<string, string> }) {
   const products = getProductsByCategory(category.slug);
   const representativeProduct = allProducts.find(
     (product) => product.slug === representativeProductSlugs[category.slug],
@@ -28,6 +28,7 @@ export default function CategoryCard({ category }: { category: Category }) {
           <ProductPhoto
             slug={imageProduct.slug}
             name={imageProduct.name}
+            src={imageOverrides[imageProduct.slug]}
             className="absolute inset-[8%] transition-transform duration-300 group-hover:scale-105"
           />
         ) : (

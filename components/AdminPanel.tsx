@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Building2, Check, CirclePlus, LogOut, Package, Pencil, Save, Search, Trash2, X } from "lucide-react";
+import { ArrowLeft, Building2, Check, CirclePlus, ImagePlus, Loader2, LogOut, Package, Pencil, Save, Search, Trash2, Upload, X } from "lucide-react";
 import Link from "next/link";
 import { brands, categories, products } from "@/data/catalog";
 import { company } from "@/data/company";
 import type { Product } from "@/types";
+import { getProductPhotoAsset } from "@/components/ProductPhoto";
 
 const PRODUCTS_KEY = "prodesk-admin-products";
 const COMPANY_KEY = "prodesk-admin-company";
@@ -175,11 +176,170 @@ function ProductEditor({ value, onChange, onSave, onClose }: { value: Product; o
   const update = <K extends keyof Product>(field: K, next: Product[K]) => onChange({ ...value, [field]: next });
   const item = value.items?.[0] ?? { code: "", description: "", unit: "", box: "", ctn: "" };
   const updateItem = (field: keyof typeof item, next: string) => update("items", [{ ...item, [field]: next }]);
-  return <div className="fixed inset-0 z-[60] overflow-y-auto bg-slate-950/50 p-4 sm:p-8"><div className="mx-auto max-w-3xl rounded-xl bg-white shadow-2xl"><div className="flex items-start justify-between gap-4 border-b border-slate-200 p-5 sm:p-6"><div><p className="text-sm font-medium text-brand">Product editor</p><h2 className="mt-1 text-xl font-semibold text-ink">{value.name || "Add product"}</h2></div><button onClick={onClose} className="rounded-md p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink" aria-label="Close product editor"><X className="h-5 w-5" /></button></div><div className="grid gap-5 p-5 sm:grid-cols-2 sm:p-6"><AdminField label="Product name" value={value.name} onChange={(next) => update("name", next)} /><AdminField label="Slug" value={value.slug} onChange={(next) => update("slug", next)} placeholder="Generated from product name if empty" /><AdminField label="SKU" value={value.sku} onChange={(next) => update("sku", next)} /><AdminField label="Availability" value={value.availability} onChange={(next) => update("availability", next)} /><AdminSelect label="Category" value={value.category} options={categories.map((category) => [category.slug, category.name])} onChange={(next) => update("category", next)} /><AdminSelect label="Brand" value={value.brand} options={[["", "Unassigned"], ...brands.map((brand) => [brand.name, brand.name])]} onChange={(next) => update("brand", next)} /><AdminField label="Price" type="number" value={value.price === null ? "" : String(value.price)} onChange={(next) => update("price", next ? Number(next) : null)} placeholder="Leave blank for Request Quote" /><AdminField label="Product image filename" value={value.image ?? ""} onChange={(next) => update("image", next || null)} placeholder="e.g. hb-pencil.jpg" /><label className="sm:col-span-2"><span className="admin-label">Description</span><textarea value={value.description} onChange={(event) => update("description", event.target.value)} rows={4} className="input mt-2 resize-y" /></label><div className="sm:col-span-2"><p className="admin-label">Primary item specification</p><div className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 sm:grid-cols-2"><AdminField label="Item code" value={item.code} onChange={(next) => updateItem("code", next)} /><AdminField label="Description" value={item.description} onChange={(next) => updateItem("description", next)} /><AdminField label="Unit" value={item.unit} onChange={(next) => updateItem("unit", next)} /><AdminField label="Box" value={item.box} onChange={(next) => updateItem("box", next)} /><AdminField label="Carton" value={item.ctn} onChange={(next) => updateItem("ctn", next)} /></div></div></div><div className="flex flex-col-reverse gap-3 border-t border-slate-200 p-5 sm:flex-row sm:justify-end sm:p-6"><button onClick={onClose} className="btn-outline">Cancel</button><button onClick={() => onSave(value)} className="btn-primary"><Save className="h-4 w-4" /> Save product</button></div></div></div>;
+  return <div className="fixed inset-0 z-[60] overflow-y-auto bg-slate-950/50 p-4 sm:p-8"><div className="mx-auto max-w-3xl rounded-xl bg-white shadow-2xl"><div className="flex items-start justify-between gap-4 border-b border-slate-200 p-5 sm:p-6"><div><p className="text-sm font-medium text-brand">Product editor</p><h2 className="mt-1 text-xl font-semibold text-ink">{value.name || "Add product"}</h2></div><button onClick={onClose} className="rounded-md p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink" aria-label="Close product editor"><X className="h-5 w-5" /></button></div><div className="grid gap-5 p-5 sm:grid-cols-2 sm:p-6"><AdminField label="Product name" value={value.name} onChange={(next) => update("name", next)} /><AdminField label="Slug" value={value.slug} onChange={(next) => update("slug", next)} placeholder="Generated from product name if empty" /><AdminField label="SKU" value={value.sku} onChange={(next) => update("sku", next)} /><AdminField label="Availability" value={value.availability} onChange={(next) => update("availability", next)} /><AdminSelect label="Category" value={value.category} options={categories.map((category) => [category.slug, category.name])} onChange={(next) => update("category", next)} /><AdminSelect label="Brand" value={value.brand} options={[["", "Unassigned"], ...brands.map((brand) => [brand.name, brand.name])]} onChange={(next) => update("brand", next)} /><AdminField label="Price" type="number" value={value.price === null ? "" : String(value.price)} onChange={(next) => update("price", next ? Number(next) : null)} placeholder="Leave blank for Request Quote" /><AdminField label="Product image filename" value={value.image ?? ""} onChange={(next) => update("image", next || null)} placeholder="e.g. hb-pencil.jpg" /><ProductImageUploader value={value} onChange={onChange} /><label className="sm:col-span-2"><span className="admin-label">Description</span><textarea value={value.description} onChange={(event) => update("description", event.target.value)} rows={4} className="input mt-2 resize-y" /></label><div className="sm:col-span-2"><p className="admin-label">Primary item specification</p><div className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 sm:grid-cols-2"><AdminField label="Item code" value={item.code} onChange={(next) => updateItem("code", next)} /><AdminField label="Description" value={item.description} onChange={(next) => updateItem("description", next)} /><AdminField label="Unit" value={item.unit} onChange={(next) => updateItem("unit", next)} /><AdminField label="Box" value={item.box} onChange={(next) => updateItem("box", next)} /><AdminField label="Carton" value={item.ctn} onChange={(next) => updateItem("ctn", next)} /></div></div></div><div className="flex flex-col-reverse gap-3 border-t border-slate-200 p-5 sm:flex-row sm:justify-end sm:p-6"><button onClick={onClose} className="btn-outline">Cancel</button><button onClick={() => onSave(value)} className="btn-primary"><Save className="h-4 w-4" /> Save product</button></div></div></div>;
 }
 
 function AdminField({ label, value, onChange, className = "", type = "text", placeholder }: { label: string; value: string; onChange: (value: string) => void; className?: string; type?: string; placeholder?: string }) {
   return <label className={`block ${className}`}><span className="admin-label">{label}</span><input type={type} value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} className="input mt-2" /></label>;
+}
+
+type UploadStatus = { kind: "idle" } | { kind: "loading" } | { kind: "uploading" } | { kind: "saved" } | { kind: "removed" } | { kind: "error"; message: string };
+
+function isAbsoluteUrl(value: string | null | undefined): value is string {
+  return !!value && /^https?:\/\//i.test(value);
+}
+
+/** Upload/replace/remove the product photo. Bytes go to Vercel Blob, the reference to Neon. */
+function ProductImageUploader({ value, onChange }: { value: Product; onChange: (value: Product) => void }) {
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [savedUrl, setSavedUrl] = useState<string | null>(null);
+  const [status, setStatus] = useState<UploadStatus>({ kind: "idle" });
+  const inputRef = useRef<HTMLInputElement>(null);
+  const slug = value.slug || makeSlug(value.name);
+
+  // Prefill the persisted (Neon) image whenever a different product is opened.
+  useEffect(() => {
+    setPendingFile(null);
+    setPreviewUrl((previous) => {
+      if (previous) URL.revokeObjectURL(previous);
+      return null;
+    });
+    setSavedUrl(null);
+    if (!slug) {
+      setStatus({ kind: "idle" });
+      return;
+    }
+    if (isAbsoluteUrl(value.image)) {
+      setSavedUrl(value.image);
+      setStatus({ kind: "idle" });
+      return;
+    }
+    let cancelled = false;
+    setStatus({ kind: "loading" });
+    fetch(`/api/admin/products/image?slug=${encodeURIComponent(slug)}`)
+      .then(async (response) => {
+        const data = (await response.json().catch(() => null)) as { url?: string | null } | null;
+        if (cancelled) return;
+        if (response.ok && data?.url) {
+          setSavedUrl(data.url);
+          onChange({ ...value, image: data.url });
+        }
+        setStatus({ kind: "idle" });
+      })
+      .catch(() => {
+        if (!cancelled) setStatus({ kind: "idle" });
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
+  function chooseFile(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+    setPendingFile(file);
+    setPreviewUrl((previous) => {
+      if (previous) URL.revokeObjectURL(previous);
+      return file ? URL.createObjectURL(file) : null;
+    });
+    setStatus({ kind: "idle" });
+  }
+
+  async function upload() {
+    if (!pendingFile || !slug) return;
+    setStatus({ kind: "uploading" });
+    try {
+      const form = new FormData();
+      form.set("slug", slug);
+      form.set("file", pendingFile);
+      const response = await fetch("/api/admin/products/image", { method: "POST", body: form });
+      const data = (await response.json().catch(() => null)) as { url?: string; error?: string } | null;
+      if (!response.ok || !data?.url) {
+        setStatus({ kind: "error", message: data?.error ?? "Upload failed. Try again." });
+        return;
+      }
+      onChange({ ...value, image: data.url });
+      setSavedUrl(data.url);
+      setPendingFile(null);
+      setPreviewUrl((previous) => {
+        if (previous) URL.revokeObjectURL(previous);
+        return null;
+      });
+      if (inputRef.current) inputRef.current.value = "";
+      setStatus({ kind: "saved" });
+    } catch {
+      setStatus({ kind: "error", message: "Could not reach the server. Try again." });
+    }
+  }
+
+  async function remove() {
+    if (!slug) return;
+    if (!window.confirm("Remove the uploaded product image? The public page falls back to the default photo.")) return;
+    setStatus({ kind: "uploading" });
+    try {
+      const response = await fetch(`/api/admin/products/image?slug=${encodeURIComponent(slug)}`, { method: "DELETE" });
+      const data = (await response.json().catch(() => null)) as { error?: string } | null;
+      if (!response.ok) {
+        setStatus({ kind: "error", message: data?.error ?? "Remove failed. Try again." });
+        return;
+      }
+      onChange({ ...value, image: null });
+      setSavedUrl(null);
+      setStatus({ kind: "removed" });
+    } catch {
+      setStatus({ kind: "error", message: "Could not reach the server. Try again." });
+    }
+  }
+
+  const currentUrl = previewUrl ?? (isAbsoluteUrl(value.image) ? value.image : savedUrl);
+  const fallbackUrl = slug ? getProductPhotoAsset(slug) : null;
+
+  return (
+    <div className="block sm:col-span-2">
+      <span className="admin-label">Product image upload</span>
+      <div className="mt-2 flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50/60 p-3 sm:flex-row">
+        <div className="flex h-40 w-full shrink-0 items-center justify-center overflow-hidden rounded-md border border-slate-200 bg-white sm:w-48">
+          {currentUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={currentUrl} alt={value.name ? `Preview of ${value.name}` : "Selected product image preview"} className="h-full w-full object-contain" />
+          ) : fallbackUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={fallbackUrl} alt="Current default product photo" className="h-full w-full object-contain opacity-70" />
+          ) : (
+            <span className="flex items-center gap-1.5 text-xs text-slate-400"><ImagePlus className="h-4 w-4" /> No image yet</span>
+          )}
+        </div>
+        <div className="min-w-0 flex-1 space-y-2.5">
+          <p className="text-xs text-slate-600">
+            {savedUrl && !previewUrl ? "Uploaded image saved — shown on the public product page." : previewUrl ? "Preview of the selected file — press Upload to save it." : "No uploaded image — the public page shows the default photo."}
+          </p>
+          <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={chooseFile} className="block w-full text-xs text-slate-600 file:mr-2 file:rounded-md file:border file:border-slate-300 file:bg-white file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-slate-700 hover:file:border-brand hover:file:text-brand" aria-label="Choose product image" />
+          <div className="flex flex-wrap gap-2">
+            <button type="button" onClick={upload} disabled={!pendingFile || !slug || status.kind === "uploading"} className="btn-primary !min-h-9 text-xs disabled:opacity-50">
+              {status.kind === "uploading" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+              <span>{savedUrl || isAbsoluteUrl(value.image) ? "Replace image" : "Upload image"}</span>
+            </button>
+            {(savedUrl || isAbsoluteUrl(value.image)) && (
+              <button type="button" onClick={remove} disabled={status.kind === "uploading"} className="admin-action admin-action-danger !py-2 text-xs"><Trash2 className="h-3.5 w-3.5" /> <span>Remove</span></button>
+            )}
+          </div>
+          {!slug && <p className="text-xs text-amber-700">Enter a product name first so the image has a slug to attach to.</p>}
+          {status.kind === "loading" && <p className="text-xs text-slate-500">Checking saved image…</p>}
+          {status.kind === "saved" && <p className="text-xs font-semibold text-emerald-700">Saved — persists across devices and redeploys.</p>}
+          {status.kind === "removed" && <p className="text-xs font-semibold text-slate-600">Removed — public page uses the default photo again.</p>}
+          {status.kind === "error" && <p role="alert" className="text-xs font-semibold text-rose-600">{status.message}</p>}
+          <p className="text-[11px] text-slate-400">JPEG, PNG, or WebP · max 4 MB · stored in Vercel Blob, linked from Neon.</p>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function AdminSelect({ label, value, options, onChange }: { label: string; value: string; options: string[][]; onChange: (value: string) => void }) {

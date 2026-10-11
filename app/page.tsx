@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import BrandCard from "@/components/BrandCard";
 import CategoryCard from "@/components/CategoryCard";
 import { categories, brands, products } from "@/data/catalog";
+import { getProductImageMap } from "@/lib/product-images";
 import { waLink } from "@/lib/utils";
 
 const supplyServices = [
@@ -30,7 +31,8 @@ function Heading({ title, sub, href, link }: { title: string; sub?: string; href
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const imageOverrides = await getProductImageMap();
   return (
     <main className="space-y-14 pb-16 sm:space-y-16">
       <Hero />
@@ -40,7 +42,7 @@ export default function Home() {
         <Heading title="Shop the catalogue" sub={`${products.length} products in ${categories.length} categories. Pick a category to see everything in it.`} href="/products" link={`View all ${products.length} products`} />
         <nav aria-label="Product categories" className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
           {categories.map((category) => (
-            <CategoryCard key={category.slug} category={category} />
+            <CategoryCard key={category.slug} category={category} imageOverrides={imageOverrides} />
           ))}
         </nav>
 

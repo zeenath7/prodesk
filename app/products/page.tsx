@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Package, Sparkles, ChevronRight, Layers } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
 import { products, getCategory, getProductsByCategory } from "@/data/catalog";
+import { getProductImageMap } from "@/lib/product-images";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -41,6 +42,7 @@ export default async function ProductsPage({
     selectedCategory?.name === "Lamination Pouch"
       ? "Lamination Pouches"
       : selectedCategory?.name;
+  const imageOverrides = await getProductImageMap();
 
   return (
     <main className="min-h-screen bg-slate-50/40">
@@ -94,7 +96,7 @@ export default async function ProductsPage({
             </div>
           }
         >
-          <ProductGrid products={products} initialCategory={selectedCategory?.slug ?? ""} cataloguePage />
+          <ProductGrid products={products} initialCategory={selectedCategory?.slug ?? ""} cataloguePage imageOverrides={imageOverrides} />
         </Suspense>
       </section>
     </main>

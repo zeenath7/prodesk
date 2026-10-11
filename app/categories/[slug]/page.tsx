@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ChevronRight, ArrowLeft, Layers, Tag } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
 import { categories, getCategory, getProductsByCategory } from "@/data/catalog";
+import { getProductImageMap } from "@/lib/product-images";
 import type { Metadata } from "next";
 
 export function generateStaticParams() {
@@ -44,6 +45,7 @@ export default async function CategoryPage({
 
   const items = getProductsByCategory(cat.slug);
   const otherCategories = categories.filter((c) => c.slug !== cat.slug);
+  const imageOverrides = await getProductImageMap();
 
   return (
     <main className="min-h-screen bg-slate-50/40">
@@ -103,7 +105,7 @@ export default async function CategoryPage({
             </div>
           }
         >
-          <ProductGrid products={items} showFilters={true} initialCategory={cat.slug} />
+          <ProductGrid products={items} showFilters={true} initialCategory={cat.slug} imageOverrides={imageOverrides} />
         </Suspense>
 
         {/* Other Categories Selector */}
