@@ -98,22 +98,22 @@ export default function Header({ productCountLabel }: { productCountLabel: strin
 
       {/* 2. Main Branding & Search Header */}
       <div className="container-x py-3 sm:py-3.5">
-        <div className="flex items-center justify-between gap-4 lg:gap-8">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 lg:gap-8">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="ProDesk Home">
+          <Link href="/" className="flex min-w-0 items-center gap-1.5 sm:gap-3 shrink-0" aria-label="ProDesk Home">
             <Image
               src="/logo.png"
               alt="ProDesk Office Stationery"
               width={160}
               height={42}
-              className="h-8 sm:h-9 w-auto object-contain"
+              className="h-6 min-[400px]:h-7 sm:h-9 w-auto shrink-0 object-contain"
               priority
             />
-            <div className="hidden md:flex flex-col">
-              <span className="text-lg font-bold tracking-tight text-slate-900 leading-none">
+            <div className="flex min-w-0 flex-col">
+              <span className="text-sm min-[400px]:text-[15px] sm:text-base md:text-lg font-bold tracking-tight text-slate-900 leading-none">
                 ProDesk
               </span>
-              <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">
+              <span className="mt-0.5 max-w-[64px] min-[380px]:max-w-none text-[7px] sm:text-[8px] md:text-[10px] font-semibold text-slate-500 uppercase tracking-wide md:tracking-wider leading-[1.3] min-[380px]:leading-none whitespace-normal min-[380px]:whitespace-nowrap">
                 Office &amp; School Stationery
               </span>
             </div>
@@ -141,12 +141,12 @@ export default function Header({ productCountLabel }: { productCountLabel: strin
           </form>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
             {/* Quote Basket Button */}
             <button
               type="button"
               onClick={openDrawer}
-              className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-800 shadow-2xs hover:border-brand hover:text-brand transition-all"
+              className="flex items-center gap-1.5 sm:gap-2 rounded-lg border border-slate-300 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs font-semibold text-slate-800 shadow-2xs hover:border-brand hover:text-brand transition-all"
               aria-label={`Open quote basket with ${totalCount} items`}
             >
               <ShoppingBag className="h-4 w-4 text-brand" />
@@ -171,7 +171,7 @@ export default function Header({ productCountLabel }: { productCountLabel: strin
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="rounded-lg border border-slate-200 p-2 text-slate-700 hover:bg-slate-100 lg:hidden"
+              className="rounded-lg border border-slate-200 p-1.5 sm:p-2 text-slate-700 hover:bg-slate-100 lg:hidden"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
