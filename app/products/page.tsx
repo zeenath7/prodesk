@@ -3,12 +3,28 @@ import Link from "next/link";
 import { Package, Sparkles, ChevronRight, Layers } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
 import { products, getCategory, getProductsByCategory } from "@/data/catalog";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "All Products & Wholesale Catalogue (180+ Lines) | ProDesk Riyadh",
-  description:
-    "Browse ProDesk's complete commercial catalog of 180+ office stationery lines, filing systems, whiteboards, paper rolls, and desk organizers with bulk carton pricing in Saudi Arabia.",
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string | string[] }>;
+}): Promise<Metadata> {
+  const { category } = await searchParams;
+  const categorySlug = Array.isArray(category) ? category[0] : category;
+  const selectedCategory = categorySlug ? getCategory(categorySlug) : undefined;
+
+  return {
+    title: selectedCategory
+      ? `${selectedCategory.name} Products | ProDesk Riyadh`
+      : "Office & School Supplies Catalogue | ProDesk Riyadh",
+    description: selectedCategory
+      ? `${selectedCategory.description} Browse ${getProductsByCategory(selectedCategory.slug).length} products and request wholesale pricing from ProDesk in Riyadh.`
+      : `Browse ${products.length} office and school stationery products, check item codes and sizes, and request wholesale pricing from ProDesk in Riyadh, Saudi Arabia.`,
+    alternates: { canonical: "/products" },
+    ...(categorySlug ? { robots: { index: false, follow: true } } : {}),
+  };
+}
 
 export default async function ProductsPage({
   searchParams,
@@ -46,7 +62,7 @@ export default async function ProductsPage({
                 <span>
                   {selectedCategory
                     ? `${selectedProducts.length} Products in ${selectedCategoryName}`
-                    : "180+ products"}
+                    : `${products.length} products`}
                 </span>
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-ink">

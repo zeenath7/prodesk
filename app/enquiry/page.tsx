@@ -8,6 +8,7 @@ export const metadata = {
   title: "Request a Wholesale Quote (RFQ) | ProDesk Office Stationery Riyadh",
   description:
     "Request custom wholesale and bulk pricing for corporate offices, schools, and retailers. Same-day quotation turnaround with official VAT invoicing across Saudi Arabia.",
+  alternates: { canonical: "/enquiry" },
 };
 
 export default function EnquiryPage() {

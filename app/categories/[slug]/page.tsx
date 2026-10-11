@@ -4,9 +4,33 @@ import { notFound } from "next/navigation";
 import { ChevronRight, ArrowLeft, Layers, Tag } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
 import { categories, getCategory, getProductsByCategory } from "@/data/catalog";
+import type { Metadata } from "next";
 
 export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const category = getCategory(slug);
+  if (!category) return { title: "Category Not Found | ProDesk" };
+  const count = getProductsByCategory(category.slug).length;
+
+  return {
+    title: `${category.name} Wholesale Supplies | ProDesk Riyadh`,
+    description: `${category.description} Browse ${count} ${category.name.toLowerCase()} products from ProDesk in Riyadh and request wholesale pricing across Saudi Arabia.`,
+    alternates: { canonical: `/categories/${category.slug}` },
+    openGraph: {
+      type: "website",
+      title: `${category.name} | ProDesk Office Stationery`,
+      description: category.description,
+      url: `https://prodeskonline.com/categories/${category.slug}`,
+    },
+  };
 }
 
 export default async function CategoryPage({

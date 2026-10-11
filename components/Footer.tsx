@@ -79,7 +79,7 @@ export default function Footer() {
             <ul className="space-y-1.5 text-xs">
               <li>
                 <Link href="/products" className="text-slate-400 hover:text-white transition-colors">
-                  All 180+ Products
+                  All 177 Products
                 </Link>
               </li>
               <li>

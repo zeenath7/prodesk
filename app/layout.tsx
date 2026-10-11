@@ -9,9 +9,26 @@ import "./globals.css";
 const sans = Instrument_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://prodeskonline.com"),
   title: "ProDesk Office Stationery | Wholesale Stationery & Office Supplies, Riyadh",
   description:
-    "ProDesk Office Stationery, Riyadh. Official distributor for Super Deal, Delux, and Azmak. Supplying 180+ office stationery lines, filing systems, boards, and wholesale supplies across Saudi Arabia.",
+    "ProDesk Office Stationery in Riyadh supplies office and school products, filing systems, boards, and wholesale stationery across Saudi Arabia. Explore 177 catalogue products and request a quote.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: "ProDesk Office Stationery",
+    title: "ProDesk Office Stationery | Wholesale Supplies in Riyadh",
+    description:
+      "Browse 177 office and school stationery products from ProDesk in Riyadh and request a wholesale quote.",
+    url: "https://prodeskonline.com",
+    locale: "en_SA",
+  },
+  twitter: {
+    card: "summary",
+    title: "ProDesk Office Stationery | Wholesale Supplies in Riyadh",
+    description:
+      "Browse office and school stationery from ProDesk in Riyadh and request a wholesale quote.",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -25,6 +42,35 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <QuoteCartProvider>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify([
+                {
+                  "@context": "https://schema.org",
+                  "@type": "Organization",
+                  name: "ProDesk Office Stationery",
+                  url: "https://prodeskonline.com",
+                  email: "sales@azmakonline.com",
+                  telephone: "+966540339239",
+                  address: {
+                    "@type": "PostalAddress",
+                    streetAddress: "Talha Bin Malik Street, Al Malaz Dist",
+                    postOfficeBoxNumber: "12831",
+                    addressLocality: "Riyadh",
+                    addressCountry: "SA",
+                  },
+                },
+                {
+                  "@context": "https://schema.org",
+                  "@type": "WebSite",
+                  name: "ProDesk Office Stationery",
+                  url: "https://prodeskonline.com",
+                  inLanguage: "en",
+                },
+              ]).replace(/</g, "\\u003c"),
+            }}
+          />
           <Header />
           <div id="main-content">{children}</div>
           <Footer />

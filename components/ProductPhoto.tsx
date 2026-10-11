@@ -35,14 +35,16 @@ const photoAliases: Record<string, string> = {
   "cheque-book": "expanding-file",
 };
 
-export function getProductPhotoStyle(slug: string): CSSProperties {
+export function getProductPhotoAsset(slug: string): string {
   const photoSlug = photoAliases[slug] ?? slug;
   const assetSlug = cleanPhotoAssets[photoSlug] ?? (filesFoldersPhotoSlugs.has(photoSlug) ? photoSlug + "-clean" : framedPaperPhotos.has(photoSlug) ? photoSlug + "-framed" : photoSlug);
-  const asset = "/product-photography/" + assetSlug + ".webp";
+  return "/product-photography/" + assetSlug + ".webp";
+}
 
+export function getProductPhotoStyle(slug: string): CSSProperties {
   return {
     backgroundColor: "#fff",
-    backgroundImage: 'url("' + asset + '")',
+    backgroundImage: 'url("' + getProductPhotoAsset(slug) + '")',
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "contain",

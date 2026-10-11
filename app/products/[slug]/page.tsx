@@ -7,12 +7,39 @@ import {
 import ProductCard from "@/components/ProductCard";
 import ProductDetailActions from "@/components/ProductDetailActions";
 import ProductItemsTable from "@/components/ProductItemsTable";
-import ProductPhoto from "@/components/ProductPhoto";
+import ProductPhoto, { getProductPhotoAsset } from "@/components/ProductPhoto";
 import { products, getCategory } from "@/data/catalog";
 import { formatPrice } from "@/lib/utils";
+import type { Metadata } from "next";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = products.find((item) => item.slug === slug);
+  if (!product) return { title: "Product Not Found | ProDesk" };
+
+  const category = getCategory(product.category);
+  const description = `View sizes, item codes, and wholesale quote details for ${product.name}${category ? ` in ${category.name.toLowerCase()}` : ""} from ProDesk Office Stationery in Riyadh.`;
+
+  return {
+    title: `${product.name} | ProDesk Riyadh`,
+    description,
+    alternates: { canonical: `/products/${product.slug}` },
+    openGraph: {
+      type: "website",
+      title: `${product.name} | ProDesk Office Stationery`,
+      description,
+      url: `https://prodeskonline.com/products/${product.slug}`,
+      images: [{ url: getProductPhotoAsset(product.slug), alt: product.name }],
+    },
+  };
 }
 
 export default async function ProductPage({

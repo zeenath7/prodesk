@@ -184,7 +184,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
         {/* Modal footer */}
         <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50 px-4 py-2.5 text-xs text-slate-500">
-          <span>Search 180+ verified products in Riyadh catalogue</span>
+          <span>Search 177 products in the Riyadh catalogue</span>
           <Link
             href="/products"
             onClick={onClose}
