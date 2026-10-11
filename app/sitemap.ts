@@ -1,23 +1,43 @@
 import type { MetadataRoute } from "next";
 import { categories, products } from "@/data/catalog";
-
-const siteUrl = "https://prodeskonline.com";
+import { getProductPhotoAsset } from "@/components/ProductPhoto";
+import { SITE_URL } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
+
   return [
-    { url: siteUrl, changeFrequency: "weekly", priority: 1 },
-    { url: `${siteUrl}/products`, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${siteUrl}/contact`, changeFrequency: "yearly", priority: 0.7 },
-    { url: `${siteUrl}/enquiry`, changeFrequency: "yearly", priority: 0.6 },
+    { url: SITE_URL, lastModified: now, changeFrequency: "weekly", priority: 1 },
+    {
+      url: `${SITE_URL}/products`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/contact`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}/enquiry`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.6,
+    },
     ...categories.map((category) => ({
-      url: `${siteUrl}/categories/${category.slug}`,
+      url: `${SITE_URL}/categories/${category.slug}`,
+      lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
     ...products.map((product) => ({
-      url: `${siteUrl}/products/${product.slug}`,
+      url: `${SITE_URL}/products/${product.slug}`,
+      lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.6,
+      images: [`${SITE_URL}${getProductPhotoAsset(product.slug)}`],
     })),
   ];
 }

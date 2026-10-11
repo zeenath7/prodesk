@@ -7,6 +7,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { company } from "@/data/company";
+import { PRODUCT_COUNT } from "@/lib/seo";
 
 const categoryLinks = [
   { label: "Files & Folders", href: "/categories/files-and-folders" },
@@ -79,7 +80,7 @@ export default function Footer() {
             <ul className="space-y-1.5 text-xs">
               <li>
                 <Link href="/products" className="text-slate-400 hover:text-white transition-colors">
-                  All 180+ Products
+                  All {PRODUCT_COUNT} Products
                 </Link>
               </li>
               <li>

@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/admin",
+      disallow: ["/admin", "/api/admin"],
     },
     sitemap: "https://prodeskonline.com/sitemap.xml",
     host: "https://prodeskonline.com",

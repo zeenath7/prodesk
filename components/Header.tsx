@@ -19,15 +19,18 @@ import { company } from "@/data/company";
 import { waLink } from "@/lib/utils";
 import { useQuoteCart } from "./QuoteCartContext";
 
-const mainNav = [
-  { label: "Catalogue", href: "/products", badge: "180+" },
+const mainNav: { label: string; href: string; badge?: string }[] = [
+  { label: "Catalogue", href: "/products", badge: "__COUNT__" },
   { label: "Brands", href: "/#brands" },
   { label: "Wholesale Supply", href: "/#wholesale" },
   { label: "About ProDesk", href: "/#about" },
   { label: "Showrooms & Contact", href: "/contact" },
 ];
 
-export default function Header() {
+export default function Header({ productCount }: { productCount: number }) {
+  const nav = mainNav.map((item) =>
+    item.badge === "__COUNT__" ? { ...item, badge: String(productCount) } : item,
+  );
   const router = useRouter();
   const pathname = usePathname();
   const [searchTerm, setSearchTerm] = useState("");
@@ -126,7 +129,7 @@ export default function Header() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search 180+ products, item codes (e.g. DE-108, 96621)..."
+              placeholder={`Search ${productCount} products, item codes (e.g. DE-108, 96621)...`}
               className="w-full bg-transparent px-3 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
             />
             <button
@@ -202,7 +205,7 @@ export default function Header() {
       <div className="hidden border-t border-slate-200 bg-slate-50 lg:block">
         <div className="container-x flex min-h-12 items-center justify-between gap-8">
           <nav className="flex items-center gap-1.5 text-sm font-semibold text-slate-700" aria-label="Primary navigation">
-            {mainNav.map((item) => (
+            {nav.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
@@ -227,7 +230,7 @@ export default function Header() {
         <div className="max-h-[calc(100svh-8rem)] overflow-y-auto border-t border-slate-200 bg-white lg:hidden">
           <div className="container-x space-y-3 py-4">
             <nav className="flex flex-col space-y-1">
-              {mainNav.map((item) => (
+              {nav.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}

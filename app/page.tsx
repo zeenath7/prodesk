@@ -37,7 +37,7 @@ export default function Home() {
 
       {/* Shop: categories on the left, popular products on the right */}
       <section id="categories" className="container-x scroll-mt-24">
-        <Heading title="Shop the catalogue" sub={`180+ products in ${categories.length} categories. Pick a category to see everything in it.`} href="/products" link="View all 180+ products" />
+        <Heading title="Shop the catalogue" sub={`${products.length} products in ${categories.length} categories. Pick a category to see everything in it.`} href="/products" link={`View all ${products.length} products`} />
         <nav aria-label="Product categories" className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
           {categories.map((category) => (
             <CategoryCard key={category.slug} category={category} />
@@ -90,7 +90,7 @@ export default function Home() {
             <p className="text-sm leading-relaxed text-slate-600">Formerly Blue Crystal Stationery, ProDesk has grown over 15 years into a trusted commercial stationery supplier in Saudi Arabia. We are national distributors for <strong>Super Deal</strong> and <strong>Delux</strong> and make our own brand <strong>Azmak</strong>.</p>
             <div className="grid grid-cols-3 gap-2 border-t border-slate-200 pt-4 text-center sm:gap-4 sm:text-left">
               <div><p className="text-xl font-extrabold text-slate-900 sm:text-3xl">15+</p><p className="mt-0.5 text-[10px] leading-tight text-slate-500 sm:text-xs">Years in Saudi market</p></div>
-              <div><p className="text-xl font-extrabold text-brand sm:text-3xl">180+</p><p className="mt-0.5 text-[10px] leading-tight text-slate-500 sm:text-xs">Products</p></div>
+              <div><p className="text-xl font-extrabold text-brand sm:text-3xl">{products.length}</p><p className="mt-0.5 text-[10px] leading-tight text-slate-500 sm:text-xs">Products</p></div>
               <div><p className="text-xl font-extrabold text-emerald-700 sm:text-3xl">50K+</p><p className="mt-0.5 text-[10px] leading-tight text-slate-500 sm:text-xs">Clients served</p></div>
             </div>
             <Link href="/contact" className="inline-flex items-center gap-1 text-sm font-bold text-brand hover:underline">Visit our two Riyadh showrooms <ArrowRight className="h-4 w-4" /></Link>

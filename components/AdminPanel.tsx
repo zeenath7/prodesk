@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, BriefcaseBusiness, Building2, Check, CirclePlus, FileText, Package, Pencil, Save, Search, Trash2, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, Building2, Check, CirclePlus, LogOut, Package, Pencil, Save, Search, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { brands, categories, products } from "@/data/catalog";
 import { company } from "@/data/company";
@@ -41,6 +42,7 @@ function readDraft<T>(key: string, fallback: T): T {
 }
 
 export default function AdminPanel() {
+  const router = useRouter();
   const [active, setActive] = useState<"products" | "company">("products");
   const [items, setItems] = useState<Product[]>(products);
   const [editing, setEditing] = useState<Product | null>(null);
@@ -87,6 +89,16 @@ export default function AdminPanel() {
     saveProducts(items.filter((item) => item.slug !== slug));
   }
 
+  async function signOut() {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+    } catch {
+      // Cookie may already be expired; still leave the workspace.
+    }
+    router.push("/admin/login");
+    router.refresh();
+  }
+
   return (
     <main className="min-h-screen bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
@@ -95,13 +107,16 @@ export default function AdminPanel() {
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">ProDesk</p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Admin workspace</h1>
           </div>
-          <Link href="/" className="btn-outline !min-h-10 !px-3 sm:!px-4"><ArrowLeft className="h-4 w-4" /> <span className="hidden sm:inline">Back to website</span></Link>
+          <div className="flex items-center gap-2">
+            <Link href="/" className="btn-outline !min-h-10 !px-3 sm:!px-4"><ArrowLeft className="h-4 w-4" /> <span className="hidden sm:inline">Back to website</span></Link>
+            <button onClick={signOut} className="btn-outline !min-h-10 !px-3 sm:!px-4"><LogOut className="h-4 w-4" /> <span className="hidden sm:inline">Sign out</span></button>
+          </div>
         </div>
       </header>
 
       <div className="container-x py-8 sm:py-10">
         <div className="mb-6 flex flex-col gap-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950 sm:flex-row sm:items-center sm:justify-between">
-          <p><strong>Local draft mode:</strong> changes are saved in this browser only. Connect a database and authentication before using this as a public production admin system.</p>
+          <p><strong>Secured workspace:</strong> signed in with a Neon-backed admin session (12-hour expiry). Catalogue edits below are still local browser drafts — connect shared content storage before multi-device publishing.</p>
           {saved && <span className="inline-flex shrink-0 items-center gap-1.5 font-semibold text-emerald-700"><Check className="h-4 w-4" /> Saved</span>}
         </div>
 

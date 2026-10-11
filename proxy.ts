@@ -1,43 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ADMIN_SESSION_COOKIE, verifyAdminSession } from "@/lib/admin-session";
 
-function unauthorized(message: string, status = 401) {
-  return new NextResponse(message, {
-    status,
-    headers: {
-      "WWW-Authenticate": 'Basic realm="ProDesk Admin", charset="UTF-8"',
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "no-store",
-    },
-  });
-}
+/**
+ * Admin gate: cookie-session auth backed by Neon Postgres.
+ * Login happens at /admin/login (credentials checked against the
+ * `admin_users` table, or ADMIN_USERNAME/ADMIN_PASSWORD bootstrap env).
+ */
+export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-export function proxy(request: NextRequest) {
-  const username = process.env.ADMIN_USERNAME;
-  const password = process.env.ADMIN_PASSWORD;
-
-  if (!username || !password) {
-    return unauthorized("Admin authentication is not configured.", 503);
+  if (pathname === "/admin/login" || pathname.startsWith("/admin/login/")) {
+    return NextResponse.next();
   }
 
-  const authorization = request.headers.get("authorization");
-  if (!authorization?.startsWith("Basic ")) {
-    return unauthorized("Authentication required.");
-  }
+  const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value ?? "";
+  const username = await verifyAdminSession(token);
+  if (username) return NextResponse.next();
 
-  try {
-    const decoded = atob(authorization.slice(6));
-    const separator = decoded.indexOf(":");
-    const suppliedUsername = separator >= 0 ? decoded.slice(0, separator) : "";
-    const suppliedPassword = separator >= 0 ? decoded.slice(separator + 1) : "";
-
-    if (suppliedUsername !== username || suppliedPassword !== password) {
-      return unauthorized("Invalid admin credentials.");
-    }
-  } catch {
-    return unauthorized("Invalid authentication header.");
-  }
-
-  return NextResponse.next();
+  const loginUrl = request.nextUrl.clone();
+  loginUrl.pathname = "/admin/login";
+  loginUrl.search = "";
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {

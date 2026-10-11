@@ -7,7 +7,7 @@ import { useQuoteCart } from "./QuoteCartContext";
 import { company } from "@/data/company";
 import ProductPhoto from "@/components/ProductPhoto";
 
-export default function QuoteDrawer() {
+export default function QuoteDrawer({ productCount }: { productCount: number }) {
   const { items, removeItem, updateQuantity, clearCart, isDrawerOpen, closeDrawer, totalCount } =
     useQuoteCart();
 
@@ -92,7 +92,7 @@ export default function QuoteDrawer() {
               </div>
               <h3 className="text-base font-semibold text-ink">Your quote list is empty</h3>
               <p className="mt-1 text-sm text-slate-500 max-w-xs">
-                Explore our catalogue of 180+ stationery products and click &ldquo;Add to Quote&rdquo; to build your procurement list.
+                Explore our catalogue of {productCount} stationery products and click &ldquo;Add to Quote&rdquo; to build your procurement list.
               </p>
               <Link
                 href="/products"

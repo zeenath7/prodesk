@@ -5,9 +5,12 @@
     "dev": "next dev -p 3005",
     "build": "next build",
     "start": "next start -p 3005",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "admin:create": "node scripts/create-admin.mjs"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "jose": "^6.2.12",
     "lucide-react": "^0.446.0",
     "next": "^16.3.8",
     "react": "^18.3.1",
