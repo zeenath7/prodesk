@@ -88,10 +88,10 @@ export default function Home() {
           <div className="space-y-4 lg:col-span-7">
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">About ProDesk Office Stationery</h2>
             <p className="text-sm leading-relaxed text-slate-600">Formerly Blue Crystal Stationery, ProDesk has grown over 15 years into a trusted commercial stationery supplier in Saudi Arabia. We are national distributors for <strong>Super Deal</strong> and <strong>Delux</strong> and make our own brand <strong>Azmak</strong>.</p>
-            <div className="grid grid-cols-3 gap-4 border-t border-slate-200 pt-4 text-center sm:text-left">
-              <div><p className="text-2xl font-extrabold text-slate-900 sm:text-3xl">15+</p><p className="mt-0.5 text-xs text-slate-500">Years in Saudi market</p></div>
-              <div><p className="text-2xl font-extrabold text-brand sm:text-3xl">{products.length}</p><p className="mt-0.5 text-xs text-slate-500">Products</p></div>
-              <div><p className="text-2xl font-extrabold text-emerald-700 sm:text-3xl">50K+</p><p className="mt-0.5 text-xs text-slate-500">Clients served</p></div>
+            <div className="grid grid-cols-3 gap-2 border-t border-slate-200 pt-4 text-center sm:gap-4 sm:text-left">
+              <div><p className="text-xl font-extrabold text-slate-900 sm:text-3xl">15+</p><p className="mt-0.5 text-[10px] leading-tight text-slate-500 sm:text-xs">Years in Saudi market</p></div>
+              <div><p className="text-xl font-extrabold text-brand sm:text-3xl">180+</p><p className="mt-0.5 text-[10px] leading-tight text-slate-500 sm:text-xs">Products</p></div>
+              <div><p className="text-xl font-extrabold text-emerald-700 sm:text-3xl">50K+</p><p className="mt-0.5 text-[10px] leading-tight text-slate-500 sm:text-xs">Clients served</p></div>
             </div>
             <Link href="/contact" className="inline-flex items-center gap-1 text-sm font-bold text-brand hover:underline">Visit our two Riyadh showrooms <ArrowRight className="h-4 w-4" /></Link>
           </div>

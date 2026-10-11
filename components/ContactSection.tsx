@@ -51,7 +51,7 @@ export default function ContactSection() {
 
           <div className="mt-6 pt-4 border-t border-slate-100 flex flex-wrap gap-2.5">
             <a
-              href="https://www.google.com/maps?q=Talha+Bin+Malik+Street,+Al+Malaz+Dist,+Riyadh,+Saudi+Arabia"
+              href={`https://www.google.com/maps/dir/?api=1&destination=${company.showroomCoordinates}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline !min-h-10 text-xs font-semibold flex items-center gap-1.5"
@@ -141,7 +141,7 @@ export default function ContactSection() {
         <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-xs overflow-hidden">
           <iframe
             title="ProDesk Office Stationery location map in Al Malaz, Riyadh"
-            src="https://www.google.com/maps?q=Talha+Bin+Malik+Street,+Al+Malaz+Dist,+Riyadh,+Saudi+Arabia&output=embed"
+            src={`https://www.google.com/maps?q=${company.showroomCoordinates}&z=17&output=embed`}
             className="h-80 w-full rounded-xl border border-slate-100 lg:h-full lg:min-h-[26rem]"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
