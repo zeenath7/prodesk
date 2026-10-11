@@ -29,7 +29,7 @@ export async function generateMetadata({
   const description = `View sizes, item codes, and wholesale quote details for ${product.name}${category ? ` in ${category.name.toLowerCase()}` : ""} from ProDesk Office Stationery in Riyadh.`;
 
   return {
-    title: `${product.name} | ProDesk Riyadh`,
+    title: `${product.name} in Saudi Arabia | ProDesk`,
     description,
     alternates: { canonical: `/products/${product.slug}` },
     openGraph: {

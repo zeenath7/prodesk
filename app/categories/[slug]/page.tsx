@@ -21,7 +21,7 @@ export async function generateMetadata({
   const count = getProductsByCategory(category.slug).length;
 
   return {
-    title: `${category.name} Wholesale Supplies | ProDesk Riyadh`,
+    title: `${category.name} Wholesale Supplies in Saudi Arabia | ProDesk`,
     description: `${category.description} Browse ${count} ${category.name.toLowerCase()} products from ProDesk in Riyadh and request wholesale pricing across Saudi Arabia.`,
     alternates: { canonical: `/categories/${category.slug}` },
     openGraph: {

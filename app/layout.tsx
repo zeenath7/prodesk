@@ -10,14 +10,14 @@ const sans = Instrument_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://prodeskonline.com"),
-  title: "ProDesk Office Stationery | Wholesale Stationery & Office Supplies, Riyadh",
+  title: "ProDesk Office Stationery | Wholesale Supplies in Riyadh, Saudi Arabia",
   description:
     "ProDesk Office Stationery in Riyadh supplies office and school products, filing systems, boards, and wholesale stationery across Saudi Arabia. Explore 177 catalogue products and request a quote.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: "ProDesk Office Stationery",
-    title: "ProDesk Office Stationery | Wholesale Supplies in Riyadh",
+    title: "ProDesk Office Stationery | Wholesale Supplies in Riyadh, Saudi Arabia",
     description:
       "Browse 177 office and school stationery products from ProDesk in Riyadh and request a wholesale quote.",
     url: "https://prodeskonline.com",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "ProDesk Office Stationery | Wholesale Supplies in Riyadh",
+    title: "ProDesk Office Stationery | Wholesale Supplies in Riyadh, Saudi Arabia",
     description:
       "Browse office and school stationery from ProDesk in Riyadh and request a wholesale quote.",
   },
@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               __html: JSON.stringify([
                 {
                   "@context": "https://schema.org",
-                  "@type": "Organization",
+                  "@type": "Store",
                   name: "ProDesk Office Stationery",
                   url: "https://prodeskonline.com",
                   email: "sales@azmakonline.com",
@@ -58,7 +58,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     streetAddress: "Talha Bin Malik Street, Al Malaz Dist",
                     postOfficeBoxNumber: "12831",
                     addressLocality: "Riyadh",
-                    addressCountry: "SA",
+                    addressCountry: "Saudi Arabia",
+                  },
+                  areaServed: {
+                    "@type": "Country",
+                    name: "Saudi Arabia",
                   },
                 },
                 {
@@ -66,7 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   "@type": "WebSite",
                   name: "ProDesk Office Stationery",
                   url: "https://prodeskonline.com",
-                  inLanguage: "en",
+                  inLanguage: "en-SA",
                 },
               ]).replace(/</g, "\\u003c"),
             }}
