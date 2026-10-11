@@ -92,11 +92,6 @@ export default function Footer() {
                   Submit RFQ
                 </Link>
               </li>
-              <li>
-                <Link href="/admin" className="text-slate-500 hover:text-slate-300 transition-colors">
-                  Admin Panel
-                </Link>
-              </li>
             </ul>
           </div>
 
