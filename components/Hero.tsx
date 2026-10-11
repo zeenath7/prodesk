@@ -20,7 +20,7 @@ export default function Hero() {
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 rounded-md bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
               <span className="h-2 w-2 rounded-full bg-brand" />
-              <span>Riyadh, Saudi Arabia · 177 Catalogue Products</span>
+              <span>Riyadh, Saudi Arabia · 180+ Products</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">

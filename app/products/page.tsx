@@ -20,7 +20,7 @@ export async function generateMetadata({
       : "Office & School Supplies Catalogue | ProDesk Saudi Arabia",
     description: selectedCategory
       ? `${selectedCategory.description} Browse ${getProductsByCategory(selectedCategory.slug).length} products and request wholesale pricing from ProDesk in Riyadh.`
-      : `Browse ${products.length} office and school stationery products, check item codes and sizes, and request wholesale pricing from ProDesk in Riyadh, Saudi Arabia.`,
+      : "Browse 180+ office and school stationery products, check item codes and sizes, and request wholesale pricing from ProDesk in Riyadh, Saudi Arabia.",
     alternates: { canonical: "/products" },
     ...(categorySlug ? { robots: { index: false, follow: true } } : {}),
   };

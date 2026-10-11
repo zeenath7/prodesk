@@ -12,14 +12,14 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://prodeskonline.com"),
   title: "ProDesk Office Stationery | Wholesale Supplies in Riyadh, Saudi Arabia",
   description:
-    "ProDesk Office Stationery in Riyadh supplies office and school products, filing systems, boards, and wholesale stationery across Saudi Arabia. Explore 177 catalogue products and request a quote.",
+    "ProDesk Office Stationery in Riyadh supplies office and school products, filing systems, boards, and wholesale stationery across Saudi Arabia. Explore 180+ catalogue products and request a quote.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: "ProDesk Office Stationery",
     title: "ProDesk Office Stationery | Wholesale Supplies in Riyadh, Saudi Arabia",
     description:
-      "Browse 177 office and school stationery products from ProDesk in Riyadh and request a wholesale quote.",
+      "Browse 180+ office and school stationery products from ProDesk in Riyadh and request a wholesale quote.",
     url: "https://prodeskonline.com",
     locale: "en_SA",
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "ProDesk Office Stationery | Wholesale Supplies in Riyadh, Saudi Arabia",
     description:
-      "Browse office and school stationery from ProDesk in Riyadh and request a wholesale quote.",
+      "Browse 180+ office and school stationery products from ProDesk in Riyadh and request a wholesale quote.",
   },
 };
 

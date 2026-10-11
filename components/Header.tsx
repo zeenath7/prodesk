@@ -20,7 +20,7 @@ import { waLink } from "@/lib/utils";
 import { useQuoteCart } from "./QuoteCartContext";
 
 const mainNav = [
-  { label: "Catalogue", href: "/products", badge: "177" },
+  { label: "Catalogue", href: "/products", badge: "180+" },
   { label: "Brands", href: "/#brands" },
   { label: "Wholesale Supply", href: "/#wholesale" },
   { label: "About ProDesk", href: "/#about" },
@@ -126,7 +126,7 @@ export default function Header() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search 177 products, item codes (e.g. DE-108, 96621)..."
+              placeholder="Search 180+ products, item codes (e.g. DE-108, 96621)..."
               className="w-full bg-transparent px-3 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
             />
             <button
