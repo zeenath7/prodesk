@@ -7,18 +7,8 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { company } from "@/data/company";
+import { categories } from "@/data/catalog";
 import { PRODUCT_COUNT } from "@/lib/seo";
-
-const categoryLinks = [
-  { label: "Files & Folders", href: "/categories/files-and-folders" },
-  { label: "Presentation Whiteboards", href: "/categories/boards" },
-  { label: "Desktop Accessories", href: "/categories/desktop-accessories" },
-  { label: "Lamination Pouches", href: "/categories/lamination-pouch" },
-  { label: "Binding Sheets & Combs", href: "/categories/binding-sheets" },
-  { label: "Paper Products & Registers", href: "/categories/paper-products" },
-  { label: "Writing & Markers", href: "/categories/writing-instruments" },
-  { label: "Cash & Key Boxes", href: "/categories/cash-box-and-key-box" },
-];
 
 export default function Footer() {
   return (
@@ -59,13 +49,13 @@ export default function Footer() {
               Key Categories
             </h3>
             <ul className="space-y-1.5 text-xs">
-              {categoryLinks.map((cat) => (
-                <li key={cat.label}>
+              {categories.map((cat) => (
+                <li key={cat.slug}>
                   <Link
-                    href={cat.href}
+                    href={`/categories/${cat.slug}`}
                     className="text-slate-400 hover:text-white transition-colors"
                   >
-                    {cat.label}
+                    {cat.name}
                   </Link>
                 </li>
               ))}
@@ -84,7 +74,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#deals" className="text-slate-400 hover:text-white transition-colors">
+                <Link href="/#wholesale" className="text-slate-400 hover:text-white transition-colors">
                   Bulk Packs
                 </Link>
               </li>
