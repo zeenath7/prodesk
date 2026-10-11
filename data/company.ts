@@ -8,7 +8,7 @@ export const company = {
   positioning: "Office Stationery • School Supplies • Distribution • Brands • Wholesale",
   phone: "+966 054 033 9239",
   phoneHref: "tel:+966540339239",
-  email: "sales@azmakonline.com",
+  email: "sales@prodeskonline.com",
   website: "https://www.azmakonline.com",
   address: "Talha Bin Malik Street, Al Malaz Dist, P.O. Box 12831, Riyadh, KSA",
   showroomCoordinates: "24.675694,46.728556",
