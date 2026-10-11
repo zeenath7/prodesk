@@ -9,6 +9,9 @@ export const SITE_HTML_LANG = "en";
 export const PRODUCT_COUNT = products.length;
 export const CATEGORY_COUNT = categories.length;
 
+/** Marketing display count used in customer-facing copy (hero, about stats, metadata). */
+export const MARKETING_PRODUCT_COUNT = "180+";
+
 export const SITE_KEYWORDS = [
   "office stationery Riyadh",
   "school supplies Saudi Arabia",

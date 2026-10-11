@@ -7,7 +7,7 @@ import { useQuoteCart } from "./QuoteCartContext";
 import { company } from "@/data/company";
 import ProductPhoto from "@/components/ProductPhoto";
 
-export default function QuoteDrawer({ productCount }: { productCount: number }) {
+export default function QuoteDrawer({ productCount }: { productCount: string }) {
   const { items, removeItem, updateQuantity, clearCart, isDrawerOpen, closeDrawer, totalCount } =
     useQuoteCart();
 

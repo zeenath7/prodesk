@@ -27,9 +27,9 @@ const mainNav: { label: string; href: string; badge?: string }[] = [
   { label: "Showrooms & Contact", href: "/contact" },
 ];
 
-export default function Header({ productCount }: { productCount: number }) {
+export default function Header({ productCountLabel }: { productCountLabel: string }) {
   const nav = mainNav.map((item) =>
-    item.badge === "__COUNT__" ? { ...item, badge: String(productCount) } : item,
+    item.badge === "__COUNT__" ? { ...item, badge: productCountLabel } : item,
   );
   const router = useRouter();
   const pathname = usePathname();
@@ -129,7 +129,7 @@ export default function Header({ productCount }: { productCount: number }) {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder={`Search ${productCount} products, item codes (e.g. DE-108, 96621)...`}
+              placeholder={`Search ${productCountLabel} products, item codes (e.g. DE-108, 96621)...`}
               className="w-full bg-transparent px-3 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
             />
             <button

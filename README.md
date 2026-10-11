@@ -34,7 +34,8 @@ setup hint instead of silently storing locally.
 
 - Canonical domain `https://prodeskonline.com`, `en-SA` language targeting,
   Riyadh geo tags, and `Store` + `WebSite` JSON-LD (see `app/layout.tsx`).
-- Catalogue counts come from `lib/seo.ts` (`PRODUCT_COUNT`) so UI copy,
-  metadata, and `sitemap.xml` never drift from `data/catalog.ts`.
+- Catalogue counts come from `lib/seo.ts` (`PRODUCT_COUNT` for functional
+  surfaces, `MARKETING_PRODUCT_COUNT` for customer-facing marketing copy) so UI
+  copy, metadata, and `sitemap.xml` stay consistent.
 - `/sitemap.xml` lists all static, category, and product URLs (with product
   images); `/admin` and `/api/admin` are disallowed in `/robots.txt`.

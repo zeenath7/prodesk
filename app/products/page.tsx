@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Package, Sparkles, ChevronRight, Layers } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
 import { products, getCategory, getProductsByCategory } from "@/data/catalog";
+import { MARKETING_PRODUCT_COUNT } from "@/lib/seo";
 import { getProductImageMap } from "@/lib/product-images";
 import type { Metadata } from "next";
 
@@ -21,7 +22,7 @@ export async function generateMetadata({
       : "Office & School Supplies Catalogue | ProDesk Saudi Arabia",
     description: selectedCategory
       ? `${selectedCategory.description} Browse ${getProductsByCategory(selectedCategory.slug).length} products and request wholesale pricing from ProDesk in Riyadh.`
-      : `Browse ${products.length} office and school stationery products, check item codes and sizes, and request wholesale pricing from ProDesk in Riyadh, Saudi Arabia.`,
+      : `Browse ${MARKETING_PRODUCT_COUNT} office and school stationery products, check item codes and sizes, and request wholesale pricing from ProDesk in Riyadh, Saudi Arabia.`,
     alternates: { canonical: "/products" },
     ...(categorySlug ? { robots: { index: false, follow: true } } : {}),
   };

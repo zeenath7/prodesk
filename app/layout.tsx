@@ -6,7 +6,7 @@ import { QuoteCartProvider } from "@/components/QuoteCartContext";
 import QuoteDrawer from "@/components/QuoteDrawer";
 import { company } from "@/data/company";
 import {
-  PRODUCT_COUNT,
+  MARKETING_PRODUCT_COUNT,
   SITE_KEYWORDS,
   SITE_LOCALE,
   SITE_NAME,
@@ -17,7 +17,7 @@ import "./globals.css";
 const sans = Instrument_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 const defaultDescription =
-  `ProDesk Office Stationery in Riyadh supplies office and school products, filing systems, boards, and wholesale stationery across Saudi Arabia. Explore ${PRODUCT_COUNT} catalogue products and request a quote.`;
+  `ProDesk Office Stationery in Riyadh supplies office and school products, filing systems, boards, and wholesale stationery across Saudi Arabia. Explore ${MARKETING_PRODUCT_COUNT} catalogue products and request a quote.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     locale: SITE_LOCALE,
     url: SITE_URL,
     title: `${SITE_NAME} | Wholesale Supplies in Riyadh, Saudi Arabia`,
-    description: `Browse ${PRODUCT_COUNT} office and school stationery products from ProDesk in Riyadh and request a wholesale quote.`,
+    description: `Browse ${MARKETING_PRODUCT_COUNT} office and school stationery products from ProDesk in Riyadh and request a wholesale quote.`,
     images: [
       {
         url: `${SITE_URL}/hero-stationery-home-v2.png`,
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} | Wholesale Supplies in Riyadh, Saudi Arabia`,
-    description: `Browse ${PRODUCT_COUNT} office and school stationery products from ProDesk in Riyadh and request a wholesale quote.`,
+    description: `Browse ${MARKETING_PRODUCT_COUNT} office and school stationery products from ProDesk in Riyadh and request a wholesale quote.`,
     images: [`${SITE_URL}/hero-stationery-home-v2.png`],
   },
   robots: {
@@ -141,10 +141,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
             }}
           />
-          <Header productCount={PRODUCT_COUNT} />
+          <Header productCountLabel={MARKETING_PRODUCT_COUNT} />
           <div id="main-content">{children}</div>
           <Footer />
-          <QuoteDrawer productCount={PRODUCT_COUNT} />
+          <QuoteDrawer productCount={MARKETING_PRODUCT_COUNT} />
         </QuoteCartProvider>
       </body>
     </html>

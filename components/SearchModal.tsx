@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { Search, X, ArrowRight, CornerDownLeft, Package } from "lucide-react";
 import { products, getCategory } from "@/data/catalog";
+import { MARKETING_PRODUCT_COUNT } from "@/lib/seo";
 import ProductPhoto from "@/components/ProductPhoto";
 import type { Product } from "@/types";
 
@@ -184,7 +185,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
         {/* Modal footer */}
         <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50 px-4 py-2.5 text-xs text-slate-500">
-          <span>Search {products.length} products in the Riyadh catalogue</span>
+          <span>Search {MARKETING_PRODUCT_COUNT} products in the Riyadh catalogue</span>
           <Link
             href="/products"
             onClick={onClose}
