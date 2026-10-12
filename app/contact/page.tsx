@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight, MapPin, Phone, Clock, MessageCircle } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import ContactSection from "@/components/ContactSection";
 import { company } from "@/data/company";
 
@@ -23,20 +23,16 @@ export default function ContactPage() {
             Home
           </Link>
           <ChevronRight className="h-3 w-3 text-slate-300" />
-          <span className="font-semibold text-ink">Contact &amp; Showrooms</span>
+          <span className="font-semibold text-ink">Contact Us</span>
         </nav>
 
         {/* Page Header */}
         <div className="mb-10 max-w-3xl">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-soft border border-brand/20 px-3 py-1 text-xs font-bold text-brand mb-2">
-            <MapPin className="h-3.5 w-3.5" />
-            <span>Riyadh Commercial Hubs · Al Malaz</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-ink">
-            Find Us &amp; Get in Touch
+            Get in Touch with ProDesk
           </h1>
           <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
-            Conveniently located in the Al Malaz district of Riyadh with two dedicated distribution locations. Visit our sample showrooms, collect bulk carton orders, or speak directly with our account specialists.
+            Connect with our team for product enquiries, wholesale orders, and business support. We&apos;re here to help businesses, schools, and retailers find the right stationery solutions.
           </p>
         </div>
 

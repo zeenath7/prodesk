@@ -96,7 +96,7 @@ export default async function Home() {
               <div><p className="text-xl font-extrabold text-brand sm:text-3xl">{MARKETING_PRODUCT_COUNT}</p><p className="mt-0.5 text-[10px] leading-tight text-slate-500 sm:text-xs">Products</p></div>
               <div><p className="text-xl font-extrabold text-emerald-700 sm:text-3xl">50K+</p><p className="mt-0.5 text-[10px] leading-tight text-slate-500 sm:text-xs">Clients served</p></div>
             </div>
-            <Link href="/contact" className="inline-flex items-center gap-1 text-sm font-bold text-brand hover:underline">Find Us &amp; Get in Touch <ArrowRight className="h-4 w-4" /></Link>
+            <Link href="/contact" className="inline-flex items-center gap-1 text-sm font-bold text-brand hover:underline">Connect with Our Team <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </div>
       </section>
