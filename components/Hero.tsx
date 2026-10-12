@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Check, ArrowRight, MessageCircle } from "lucide-react";
 import { waLink } from "@/lib/utils";
 import { company } from "@/data/company";
-import { MARKETING_PRODUCT_COUNT } from "@/lib/seo";
 
 const trustPoints = [
   "National agent for Super Deal & Delux",

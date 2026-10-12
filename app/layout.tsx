@@ -17,11 +17,13 @@ import "./globals.css";
 const sans = Instrument_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 const defaultDescription =
-  `ProDesk Office Stationery in Riyadh supplies office and school products, filing systems, boards, and wholesale stationery across Saudi Arabia. Explore ${MARKETING_PRODUCT_COUNT} catalogue products and request a quote.`;
+  "ProDesk Office Stationery supplies quality office and school stationery to businesses, schools, retailers, and institutions. Explore our products and wholesale solutions.";
+
+const defaultTitle = "ProDesk Office Stationery | Wholesale & Retail Stationery Supplier";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: `${SITE_NAME} | Wholesale Supplies in Riyadh, Saudi Arabia`,
+  title: defaultTitle,
   description: defaultDescription,
   keywords: SITE_KEYWORDS,
   authors: [{ name: SITE_NAME }],
@@ -37,8 +39,8 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: SITE_LOCALE,
     url: SITE_URL,
-    title: `${SITE_NAME} | Wholesale Supplies in Riyadh, Saudi Arabia`,
-    description: `Browse ${MARKETING_PRODUCT_COUNT} office and school stationery products from ProDesk in Riyadh and request a wholesale quote.`,
+    title: defaultTitle,
+    description: defaultDescription,
     images: [
       {
         url: `${SITE_URL}/hero-stationery-home-v2.png`,
@@ -50,8 +52,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} | Wholesale Supplies in Riyadh, Saudi Arabia`,
-    description: `Browse ${MARKETING_PRODUCT_COUNT} office and school stationery products from ProDesk in Riyadh and request a wholesale quote.`,
+    title: defaultTitle,
+    description: defaultDescription,
     images: [`${SITE_URL}/hero-stationery-home-v2.png`],
   },
   robots: {
