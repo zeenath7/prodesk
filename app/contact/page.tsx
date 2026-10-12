@@ -29,10 +29,10 @@ export default function ContactPage() {
         {/* Page Header */}
         <div className="mb-10 max-w-3xl">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-ink">
-            Get in Touch with ProDesk
+            Contact Our Team
           </h1>
           <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
-            Connect with our team for product enquiries, wholesale orders, and business support. We&apos;re here to help businesses, schools, and retailers find the right stationery solutions.
+            Have questions about our products or wholesale services? Our team is here to help businesses, schools, and retailers find the right stationery solutions.
           </p>
         </div>
 
