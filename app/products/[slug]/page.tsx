@@ -156,7 +156,7 @@ export default async function ProductPage({
               </div>
               <div className="flex items-center gap-2">
                 <Check className="h-4 w-4 text-brand shrink-0" />
-                <span>Al Malaz Showrooms in Riyadh</span>
+                <span>Al-Malaz Showrooms in Riyadh</span>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="h-4 w-4 text-brand shrink-0" />

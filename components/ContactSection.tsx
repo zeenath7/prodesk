@@ -140,7 +140,7 @@ export default function ContactSection() {
       <div className="grid gap-8 lg:grid-cols-[1.3fr_0.9fr] items-stretch">
         <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-xs overflow-hidden">
           <iframe
-            title="ProDesk Office Stationery location map in Al Malaz, Riyadh"
+            title="ProDesk Office Stationery location map in Al-Malaz, Riyadh"
             src={`https://www.google.com/maps?q=${company.showroomCoordinates}&z=17&output=embed`}
             className="h-80 w-full rounded-xl border border-slate-100 lg:h-full lg:min-h-[26rem]"
             loading="lazy"

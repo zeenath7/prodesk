@@ -12,7 +12,7 @@ import { waLink } from "@/lib/utils";
 const supplyServices = [
   { icon: Boxes, title: "Master carton wholesale", text: "Carton rates and volume price breaks for resellers, retail stores and contractors." },
   { icon: Building2, title: "Institutional accounts", text: "Procurement support for schools, universities, ministries and offices, with ZATCA invoicing." },
-  { icon: Store, title: "Two Riyadh showrooms", text: "Inspect samples and collect urgent bulk orders in Al Malaz, Riyadh." },
+  { icon: Store, title: "Two Riyadh showrooms", text: "Inspect samples and collect urgent bulk orders in Al-Malaz, Riyadh." },
   { icon: Truck, title: "Nationwide delivery", text: "Dispatch across Riyadh, Eastern, Western and all other regions of Saudi Arabia." },
 ];
 

@@ -270,7 +270,7 @@ export default function Header({ productCountLabel }: { productCountLabel: strin
             </div>
 
             <div className="pt-2 text-xs text-slate-500">
-              <p className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5 text-slate-400" aria-hidden="true" /> Showrooms: Talha Bin Malik St &amp; Al Hawari, Al Malaz</p>
+              <p className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5 text-slate-400" aria-hidden="true" /> Showrooms: Talha Bin Malik St &amp; Al Hawari, Al-Malaz</p>
               <p className="mt-1 flex items-center gap-2"><Phone className="h-3.5 w-3.5 text-slate-400" aria-hidden="true" /> {company.phone}</p>
             </div>
           </div>

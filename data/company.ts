@@ -10,9 +10,9 @@ export const company = {
   phoneHref: "tel:+966540339239",
   email: "sales@prodeskonline.com",
   website: "https://www.azmakonline.com",
-  address: "Talha Bin Malik Street, Al Malaz Dist, P.O. Box 12831, Riyadh, KSA",
+  address: "Talha Bin Malik Street, Al-Malaz Dist, P.O. Box 12831, Riyadh, KSA",
   showroomCoordinates: "24.675694,46.728556",
-  branch2: "Al Hawari 7953, Al Malaz Dist, Riyadh, KSA",
+  branch2: "Al Hawari 7953, Al-Malaz Dist, Riyadh, KSA",
   branch2Phone: "+966 0595 223 621",
   hours: "8:00 AM – 9:30 PM",
   whatsapp: "966540339239", // digits only, with country code

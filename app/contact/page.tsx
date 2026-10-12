@@ -6,7 +6,7 @@ import { company } from "@/data/company";
 export const metadata = {
   title: "Contact & Showroom Locations | ProDesk Office Stationery Riyadh",
   description:
-    "Visit our two Al Malaz showroom and warehouse hubs in Riyadh or get in touch for corporate accounts, wholesale pricing, and tender inquiries in Saudi Arabia.",
+    "Visit our two Al-Malaz showroom and warehouse hubs in Riyadh or get in touch for corporate accounts, wholesale pricing, and tender inquiries in Saudi Arabia.",
   alternates: { canonical: "/contact" },
 };
 

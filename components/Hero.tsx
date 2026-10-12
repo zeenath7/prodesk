@@ -8,7 +8,7 @@ import { MARKETING_PRODUCT_COUNT } from "@/lib/seo";
 const trustPoints = [
   "National agent for Super Deal & Delux",
   "Official ZATCA tax invoicing & VAT compliant",
-  "Two Al Malaz distribution showrooms in Riyadh",
+  "Two Al-Malaz distribution showrooms in Riyadh",
   "Master carton wholesale rates for bulk orders",
 ];
 
@@ -82,7 +82,7 @@ export default function Hero() {
               {/* Clean caption card beneath photo */}
               <div className="p-3 text-xs text-slate-600 flex items-center justify-between">
                 <div>
-                  <p className="font-bold text-slate-900">Al Malaz Distribution Showrooms</p>
+                  <p className="font-bold text-slate-900">Al-Malaz Distribution Showrooms</p>
                   <p className="text-slate-500">Talha Bin Malik St &amp; Al Hawari, Riyadh</p>
                 </div>
                 <Link href="/contact" className="font-semibold text-brand hover:underline">

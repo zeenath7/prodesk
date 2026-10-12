@@ -89,7 +89,7 @@ const structuredData = [
     paymentAccepted: "Cash, Bank Transfer",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Talha Bin Malik Street, Al Malaz Dist",
+      streetAddress: "Talha Bin Malik Street, Al-Malaz Dist",
       postOfficeBoxNumber: "12831",
       addressLocality: "Riyadh",
       addressRegion: "Riyadh Province",

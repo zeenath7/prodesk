@@ -481,7 +481,7 @@ export default function EnquiryForm() {
           </span>
           <span className="flex items-center gap-1.5">
             <Building className="h-3.5 w-3.5 text-brand" />
-            Showroom Pickup in Al Malaz
+            Showroom Pickup in Al-Malaz
           </span>
         </div>
       </div>
