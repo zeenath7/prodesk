@@ -82,11 +82,11 @@ export default function Hero() {
               {/* Clean caption card beneath photo */}
               <div className="p-3 text-xs text-slate-600 flex items-center justify-between">
                 <div>
-                  <p className="font-bold text-slate-900">Al-Malaz Distribution Showrooms</p>
+                  <p className="font-bold text-slate-900">ProDesk Showroom &amp; Distribution Hub</p>
                   <p className="text-slate-500">Talha Bin Malik St &amp; Al Hawari, Riyadh</p>
                 </div>
                 <Link href="/contact" className="font-semibold text-brand hover:underline">
-                  Visit Us →
+                  View Location →
                 </Link>
               </div>
             </div>
