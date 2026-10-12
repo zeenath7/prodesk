@@ -60,7 +60,7 @@ export default async function Home() {
       {/* Wholesale */}
       <section id="wholesale" className="container-x scroll-mt-24">
         <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Wholesale &amp; institutional supply</h2>
+          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Wholesale &amp; Institutional Supply</h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {supplyServices.map(({ icon: Icon, title, text }) => (
               <div key={title} className="rounded-xl border border-slate-100 bg-slate-50/60 p-5">
