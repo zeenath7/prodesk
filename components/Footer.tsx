@@ -142,8 +142,8 @@ export default function Footer() {
               Wholesale RFQ
             </Link>
             <span>·</span>
-            <a href={company.website} target="_blank" rel="noreferrer" className="hover:text-slate-300 transition-colors">
-              {company.website.replace(/^https?:\/\//, "")}
+            <a href="https://prodeskonline.com" target="_blank" rel="noreferrer" className="hover:text-slate-300 transition-colors">
+              www.prodeskonline.com
             </a>
           </div>
         </div>
