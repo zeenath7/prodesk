@@ -24,7 +24,7 @@ const mainNav: { label: string; href: string; badge?: string }[] = [
   { label: "Brands", href: "/#brands" },
   { label: "Wholesale Supply", href: "/#wholesale" },
   { label: "About ProDesk", href: "/#about" },
-  { label: "Showrooms & Contact", href: "/contact" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export default function Header({ productCountLabel }: { productCountLabel: string }) {
