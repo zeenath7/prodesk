@@ -1,6 +1,6 @@
 node_modules
 .next
-.neon/
+.neon
 .env*
 !.env.example
 *.log
