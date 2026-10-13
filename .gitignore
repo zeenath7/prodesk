@@ -1,5 +1,6 @@
 node_modules
 .next
+.neon/
 .env*
 !.env.example
 *.log
@@ -8,3 +9,4 @@ node_modules
 # Source catalogue (175MB) lives in docs/ — never commit or serve it from public/
 docs/*.pdf
 public/*.pdf
+.vercel
