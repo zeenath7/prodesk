@@ -10,7 +10,17 @@ export async function getSharedProducts(): Promise<Product[]> {
     await sql`INSERT INTO site_content (content_key, content) VALUES ('products', ${JSON.stringify(products)}::jsonb) ON CONFLICT (content_key) DO NOTHING`;
     const rows = await sql`SELECT content FROM site_content WHERE content_key = 'products' LIMIT 1`;
     const value = rows[0]?.content as Product[] | undefined;
-    return Array.isArray(value) ? value : products;
+    if (!Array.isArray(value)) return products;
+    // Repair products saved before the category slug was corrected in the source catalogue.
+    const normalized = value.map((product) =>
+      product.category === "binding-comb-and-spine-bar"
+        ? { ...product, category: "spine-bar" }
+        : product,
+    );
+    if (normalized.some((product, index) => product !== value[index])) {
+      await saveSharedProducts(normalized);
+    }
+    return normalized;
   } catch {
     return products;
   }
