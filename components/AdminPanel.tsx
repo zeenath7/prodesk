@@ -135,7 +135,7 @@ export default function AdminPanel() {
 
       <div className="container-x py-8 sm:py-10">
         <div className="mb-6 flex flex-col gap-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950 sm:flex-row sm:items-center sm:justify-between">
-          <p><strong>Secured workspace:</strong> signed in with a Neon-backed admin session (12-hour expiry). Product changes are saved to the shared Neon catalogue.</p>
+          <p><strong>Secured workspace:</strong> signed in with a Neon-backed admin session (12-hour expiry). Product and image changes are saved to the shared Neon catalogue; company details are still saved in this browser only.</p>
           {saved && <span className="inline-flex shrink-0 items-center gap-1.5 font-semibold text-emerald-700"><Check className="h-4 w-4" /> Saved</span>}
         </div>
         {storageError && <p role="alert" className="mb-6 rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">{storageError}</p>}
