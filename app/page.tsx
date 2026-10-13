@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import BrandCard from "@/components/BrandCard";
 import CategoryCard from "@/components/CategoryCard";
 import { categories, brands, products } from "@/data/catalog";
+import { getSharedCompany } from "@/lib/catalog-storage";
 import { MARKETING_PRODUCT_COUNT } from "@/lib/seo";
 import { getProductImageMap } from "@/lib/product-images";
 import { waLink } from "@/lib/utils";
@@ -38,6 +39,7 @@ function Heading({ title, sub, href, link }: { title: string; sub?: string; href
 export default async function Home() {
   const sharedProducts = await getSharedProducts();
   const imageOverrides = await getProductImageMap();
+  const company = await getSharedCompany();
   return (
     <main className="space-y-14 pb-16 sm:space-y-16">
       <Hero />
@@ -78,7 +80,7 @@ export default async function Home() {
             <p className="text-xs text-slate-600"><span className="font-bold text-slate-900">Have a tender or bill of quantities?</span> Send your list for bulk pricing.</p>
             <div className="flex items-center gap-3">
               <Link href="/enquiry" className="btn-primary !min-h-9 text-xs">Submit RFQ list</Link>
-              <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn-outline !min-h-9 text-xs">WhatsApp Wholesale Team</a>
+              <a href={waLink(undefined, company.whatsapp)} target="_blank" rel="noopener noreferrer" className="btn-outline !min-h-9 text-xs">WhatsApp Wholesale Team</a>
             </div>
           </div>
         </div>
@@ -114,7 +116,7 @@ export default async function Home() {
           </div>
           <div className="flex shrink-0 flex-wrap items-center justify-center gap-3">
             <Link href="/enquiry" className="btn bg-white font-bold text-slate-900 hover:bg-slate-100">Request a quote</Link>
-            <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn flex items-center gap-2 border border-slate-700 bg-slate-800 font-bold text-white hover:bg-slate-700">
+            <a href={waLink(undefined, company.whatsapp)} target="_blank" rel="noopener noreferrer" className="btn flex items-center gap-2 border border-slate-700 bg-slate-800 font-bold text-white hover:bg-slate-700">
               <MessageCircle className="h-4 w-4 text-emerald-400" /><span>WhatsApp</span>
             </a>
           </div>

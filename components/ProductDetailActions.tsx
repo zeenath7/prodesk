@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import { Plus, Minus, Check, ShoppingBag, MessageCircle, FileText } from "lucide-react";
 import { useQuoteCart } from "./QuoteCartContext";
+import { useCompany } from "@/lib/company-context";
 import { waLink } from "@/lib/utils";
 import type { Product } from "@/types";
 
 export default function ProductDetailActions({ product }: { product: Product }) {
   const { addItem, openDrawer } = useQuoteCart();
+  const company = useCompany();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
@@ -80,7 +82,8 @@ export default function ProductDetailActions({ product }: { product: Product }) 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         <a
           href={waLink(
-            `Hello ProDesk, I would like to enquire about bulk/wholesale availability for: ${product.name} (Qty: ${quantity}).`
+            `Hello ProDesk, I would like to enquire about bulk/wholesale availability for: ${product.name} (Qty: ${quantity}).`,
+            company.whatsapp
           )}
           target="_blank"
           rel="noopener noreferrer"

@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Check, ArrowRight, MessageCircle } from "lucide-react";
 import { waLink } from "@/lib/utils";
-import { company } from "@/data/company";
+import { getSharedCompany } from "@/lib/catalog-storage";
 
 const trustPoints = [
   "National agent for Super Deal & Delux",
@@ -11,7 +11,8 @@ const trustPoints = [
   "Master carton wholesale rates for bulk orders",
 ];
 
-export default function Hero() {
+export default async function Hero() {
+  const company = await getSharedCompany();
   return (
     <section className="bg-white border-b border-slate-200">
       <div className="container-x py-10 sm:py-14 lg:py-16">
@@ -38,7 +39,7 @@ export default function Hero() {
               </Link>
 
               <a
-                href={waLink()}
+                href={waLink(undefined, company.whatsapp)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-emerald-300 bg-emerald-50 px-3.5 py-2 text-xs sm:text-sm font-semibold text-emerald-800 hover:bg-emerald-100 transition-colors"

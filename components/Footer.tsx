@@ -6,11 +6,12 @@ import {
   Clock,
   ShieldCheck,
 } from "lucide-react";
-import { company } from "@/data/company";
+import { getSharedCompany } from "@/lib/catalog-storage";
 import { categories } from "@/data/catalog";
 import { MARKETING_PRODUCT_COUNT } from "@/lib/seo";
 
-export default function Footer() {
+export default async function Footer() {
+  const company = await getSharedCompany();
   return (
     <footer className="bg-slate-950 text-slate-300 border-t border-slate-800">
       {/* Main Footer Links */}

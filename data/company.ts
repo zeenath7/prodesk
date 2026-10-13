@@ -1,6 +1,22 @@
 // ProDesk Office Stationery, Riyadh (formerly Blue Crystal Stationery).
 // Product range and brands taken from BLUE CRYSTAL CATALOGUE NEW.pdf (85 pages, Feb 2026,
 // kept in docs/ out of git) — national agents for Super Deal and Delux; in-house brand Azmak.
+export type CompanyInfo = {
+  name: string;
+  short: string;
+  associate: string;
+  positioning: string;
+  phone: string;
+  phoneHref: string;
+  email: string;
+  website: string;
+  address: string;
+  showroomCoordinates: string;
+  branch2: string;
+  branch2Phone: string;
+  hours: string;
+  whatsapp: string;
+};
 export const company = {
   name: "ProDesk Office Stationery",
   short: "ProDesk",

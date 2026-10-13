@@ -15,7 +15,7 @@ import {
   X,
   FileText,
 } from "lucide-react";
-import { company } from "@/data/company";
+import { useCompany } from "@/lib/company-context";
 import { waLink } from "@/lib/utils";
 import { useQuoteCart } from "./QuoteCartContext";
 
@@ -31,6 +31,7 @@ export default function Header({ productCountLabel }: { productCountLabel: strin
   const nav = mainNav.map((item) =>
     item.badge === "__COUNT__" ? { ...item, badge: productCountLabel } : item,
   );
+  const company = useCompany();
   const router = useRouter();
   const pathname = usePathname();
   const [searchTerm, setSearchTerm] = useState("");
@@ -84,7 +85,7 @@ export default function Header({ productCountLabel }: { productCountLabel: strin
               <span>{company.phone}</span>
             </a>
             <a
-              href={waLink()}
+              href={waLink(undefined, company.whatsapp)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
@@ -259,7 +260,7 @@ export default function Header({ productCountLabel }: { productCountLabel: strin
                 Request a Wholesale Quote
               </Link>
               <a
-                href={waLink()}
+                href={waLink(undefined, company.whatsapp)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors w-full"

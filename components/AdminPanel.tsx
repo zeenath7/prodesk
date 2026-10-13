@@ -59,7 +59,25 @@ export default function AdminPanel() {
         if (Array.isArray(data.products)) setItems(data.products as Product[]);
       })
       .catch((error: unknown) => setStorageError(error instanceof Error ? error.message : "Could not load shared products."));
-    setCompanyDraft(readDraft(COMPANY_KEY, company));
+    fetch("/api/admin/company", { cache: "no-store" })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error ?? "Could not load shared company details.");
+        if (data.company && typeof data.company === "object") {
+          setCompanyDraft((previous) => {
+            const next = { ...previous };
+            for (const key of Object.keys(next) as (keyof CompanyDraft)[]) {
+              const value = (data.company as Record<string, unknown>)[key];
+              if (typeof value === "string") next[key] = value;
+            }
+            return next;
+          });
+        }
+      })
+      .catch((error: unknown) => {
+        setCompanyDraft(readDraft(COMPANY_KEY, company));
+        setStorageError((previous) => previous || (error instanceof Error ? error.message : "Could not load shared company details."));
+      });
   }, []);
 
   const filtered = useMemo(() => {
@@ -87,9 +105,21 @@ export default function AdminPanel() {
     }
   }
 
-  function saveCompany() {
-    window.localStorage.setItem(COMPANY_KEY, JSON.stringify(companyDraft));
-    flashSaved();
+  async function saveCompany() {
+    setStorageError("");
+    try {
+      const response = await fetch("/api/admin/company", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ company: companyDraft }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "Could not save company details.");
+      window.localStorage.setItem(COMPANY_KEY, JSON.stringify(companyDraft));
+      flashSaved();
+    } catch (error) {
+      setStorageError(error instanceof Error ? error.message : "Could not save company details.");
+    }
   }
 
   function flashSaved() {
@@ -135,7 +165,7 @@ export default function AdminPanel() {
 
       <div className="container-x py-8 sm:py-10">
         <div className="mb-6 flex flex-col gap-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950 sm:flex-row sm:items-center sm:justify-between">
-          <p><strong>Secured workspace:</strong> signed in with a Neon-backed admin session (12-hour expiry). Product and image changes are saved to the shared Neon catalogue; company details are still saved in this browser only.</p>
+          <p><strong>Secured workspace:</strong> signed in with a Neon-backed admin session (12-hour expiry). Product, image, and company changes are saved to the shared Neon catalogue.</p>
           {saved && <span className="inline-flex shrink-0 items-center gap-1.5 font-semibold text-emerald-700"><Check className="h-4 w-4" /> Saved</span>}
         </div>
         {storageError && <p role="alert" className="mb-6 rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">{storageError}</p>}
@@ -154,7 +184,7 @@ export default function AdminPanel() {
 
           <section className="min-w-0">
             {active === "products" ? (
-              <ProductsManager products={filtered} total={items.length} query={query} onQueryChange={setQuery} onEdit={setEditing} onAdd={() => setEditing({ ...emptyProduct, items: [] })} onRemove={removeProduct} />
+              <ProductsManager products={filtered} all={items} total={items.length} query={query} onQueryChange={setQuery} onEdit={setEditing} onAdd={(categorySlug) => setEditing({ ...emptyProduct, items: [], category: categorySlug || categories[0]?.slug || "" })} onRemove={removeProduct} />
             ) : (
               <CompanyManager value={companyDraft} onChange={setCompanyDraft} onSave={saveCompany} />
             )}
@@ -167,23 +197,55 @@ export default function AdminPanel() {
   );
 }
 
-function ProductsManager({ products: visibleProducts, total, query, onQueryChange, onEdit, onAdd, onRemove }: { products: Product[]; total: number; query: string; onQueryChange: (value: string) => void; onEdit: (product: Product) => void; onAdd: () => void; onRemove: (slug: string) => void }) {
+function ProductsManager({ products: visibleProducts, all, total, query, onQueryChange, onEdit, onAdd, onRemove }: { products: Product[]; all: Product[]; total: number; query: string; onQueryChange: (value: string) => void; onEdit: (product: Product) => void; onAdd: (categorySlug: string) => void; onRemove: (slug: string) => void }) {
+  const searching = query.trim().length > 0;
+  const groups = categories
+    .map((category) => ({ category, items: all.filter((product) => product.category === category.slug) }))
+    .filter((group) => group.items.length > 0);
+  const ungrouped = all.filter((product) => !categories.some((category) => category.slug === product.category));
   return (
     <div>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div><p className="text-sm font-medium text-brand">Catalogue maintenance</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">Products</h2><p className="mt-1 text-sm text-slate-600">Edit descriptions, packaging, availability, pricing, images, and brand details.</p></div>
-        <button onClick={onAdd} className="btn-primary shrink-0"><CirclePlus className="h-4 w-4" /> Add product</button>
+        <div><p className="text-sm font-medium text-brand">Catalogue maintenance</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">Products</h2><p className="mt-1 text-sm text-slate-600">Browse by category and add products where they belong, or search across everything.</p></div>
+        <button onClick={() => onAdd("")} className="btn-primary shrink-0"><CirclePlus className="h-4 w-4" /> Add product</button>
       </div>
       <div className="mt-6 flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
-        <Search className="h-5 w-5 shrink-0 text-slate-400" /><input aria-label="Search admin products" type="search" value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Search products, SKU, brand..." className="w-full bg-transparent text-sm text-ink outline-none placeholder:text-slate-400" /><span className="hidden shrink-0 text-xs text-slate-500 sm:inline">{visibleProducts.length} / {total}</span>
+        <Search className="h-5 w-5 shrink-0 text-slate-400" /><input aria-label="Search admin products" type="search" value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Search products, SKU, brand..." className="w-full bg-transparent text-sm text-ink outline-none placeholder:text-slate-400" /><span className="hidden shrink-0 text-xs text-slate-500 sm:inline">{searching ? `${visibleProducts.length} / ${total}` : `${total} products`}</span>
       </div>
-      <div className="mt-4 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-        <div className="hidden grid-cols-[minmax(0,1.6fr)_1fr_1fr_auto] gap-4 border-b border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 md:grid"><span>Product</span><span>Category</span><span>Brand</span><span>Actions</span></div>
-        {visibleProducts.map((product) => <div key={product.slug} className="grid gap-3 border-b border-slate-100 px-4 py-4 last:border-b-0 md:grid-cols-[minmax(0,1.6fr)_1fr_1fr_auto] md:items-center md:gap-4"><div className="min-w-0"><p className="truncate font-semibold text-ink">{product.name || "Untitled product"}</p><p className="mt-1 text-xs text-slate-500">{product.sku || "No SKU"} · {product.availability || "No availability"}</p></div><p className="text-sm text-slate-600">{(categories.find((category) => category.slug === product.category)?.name ?? product.category) || "—"}</p><p className="text-sm text-slate-600">{product.brand || "Unassigned"}</p><div className="flex gap-2"><button onClick={() => onEdit({ ...product, items: product.items ? [...product.items] : [] })} className="admin-action"><Pencil className="h-4 w-4" /> <span>Edit</span></button><button onClick={() => onRemove(product.slug)} className="admin-action admin-action-danger" aria-label={`Delete ${product.name}`}><Trash2 className="h-4 w-4" /></button></div></div>)}
-        {visibleProducts.length === 0 && <div className="px-4 py-12 text-center text-sm text-slate-500">No products match your search.</div>}
-      </div>
+      {searching ? (
+        <div className="mt-4 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="hidden grid-cols-[minmax(0,1.6fr)_1fr_1fr_auto] gap-4 border-b border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 md:grid"><span>Product</span><span>Category</span><span>Brand</span><span>Actions</span></div>
+          {visibleProducts.map((product) => <ProductRow key={product.slug} product={product} showCategory onEdit={onEdit} onRemove={onRemove} />)}
+          {visibleProducts.length === 0 && <div className="px-4 py-12 text-center text-sm text-slate-500">No products match your search.</div>}
+        </div>
+      ) : (
+        <div className="mt-4 space-y-4">
+          {groups.map(({ category, items }) => (
+            <section key={category.slug} className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3">
+                <div><p className="font-semibold text-ink">{category.name}</p><p className="text-xs text-slate-500">{items.length} {items.length === 1 ? "product" : "products"}</p></div>
+                <button onClick={() => onAdd(category.slug)} className="btn-outline !min-h-9 text-xs"><CirclePlus className="h-3.5 w-3.5" /> <span>Add to {category.name}</span></button>
+              </div>
+              {items.map((product) => <ProductRow key={product.slug} product={product} showCategory={false} onEdit={onEdit} onRemove={onRemove} />)}
+            </section>
+          ))}
+          {ungrouped.length > 0 && (
+            <section className="overflow-hidden rounded-lg border border-amber-200 bg-white shadow-sm">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-amber-200 bg-amber-50 px-4 py-3">
+                <div><p className="font-semibold text-ink">Unassigned category</p><p className="text-xs text-slate-500">{ungrouped.length} {ungrouped.length === 1 ? "product" : "products"}</p></div>
+                <button onClick={() => onAdd("")} className="btn-outline !min-h-9 text-xs"><CirclePlus className="h-3.5 w-3.5" /> <span>Add product</span></button>
+              </div>
+              {ungrouped.map((product) => <ProductRow key={product.slug} product={product} showCategory onEdit={onEdit} onRemove={onRemove} />)}
+            </section>
+          )}
+        </div>
+      )}
     </div>
   );
+}
+
+function ProductRow({ product, showCategory, onEdit, onRemove }: { product: Product; showCategory: boolean; onEdit: (product: Product) => void; onRemove: (slug: string) => void }) {
+  return <div className="grid gap-3 border-b border-slate-100 px-4 py-4 last:border-b-0 md:grid-cols-[minmax(0,1.6fr)_1fr_1fr_auto] md:items-center md:gap-4"><div className="min-w-0"><p className="truncate font-semibold text-ink">{product.name || "Untitled product"}</p><p className="mt-1 text-xs text-slate-500">{product.sku || "No SKU"} · {product.availability || "No availability"}</p></div>{showCategory ? <p className="text-sm text-slate-600">{(categories.find((category) => category.slug === product.category)?.name ?? product.category) || "—"}</p> : <span className="hidden md:block" /> }<p className="text-sm text-slate-600">{product.brand || "Unassigned"}</p><div className="flex gap-2"><button onClick={() => onEdit({ ...product, items: product.items ? [...product.items] : [] })} className="admin-action"><Pencil className="h-4 w-4" /> <span>Edit</span></button><button onClick={() => onRemove(product.slug)} className="admin-action admin-action-danger" aria-label={`Delete ${product.name}`}><Trash2 className="h-4 w-4" /></button></div></div>;
 }
 
 function CompanyManager({ value, onChange, onSave }: { value: CompanyDraft; onChange: (value: CompanyDraft) => void; onSave: () => void }) {
@@ -195,7 +257,7 @@ function ProductEditor({ value, onChange, onSave, onClose }: { value: Product; o
   const update = <K extends keyof Product>(field: K, next: Product[K]) => onChange({ ...value, [field]: next });
   const item = value.items?.[0] ?? { code: "", description: "", unit: "", box: "", ctn: "" };
   const updateItem = (field: keyof typeof item, next: string) => update("items", [{ ...item, [field]: next }]);
-  return <div className="fixed inset-0 z-[60] overflow-y-auto bg-slate-950/50 p-4 sm:p-8"><div className="mx-auto max-w-3xl rounded-xl bg-white shadow-2xl"><div className="flex items-start justify-between gap-4 border-b border-slate-200 p-5 sm:p-6"><div><p className="text-sm font-medium text-brand">Product editor</p><h2 className="mt-1 text-xl font-semibold text-ink">{value.name || "Add product"}</h2></div><button onClick={onClose} className="rounded-md p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink" aria-label="Close product editor"><X className="h-5 w-5" /></button></div><div className="grid gap-5 p-5 sm:grid-cols-2 sm:p-6"><AdminField label="Product name" value={value.name} onChange={(next) => update("name", next)} /><AdminField label="Slug" value={value.slug} onChange={(next) => update("slug", next)} placeholder="Generated from product name if empty" /><AdminField label="SKU" value={value.sku} onChange={(next) => update("sku", next)} /><AdminSelect label="Availability" value={["In Stock", "Out of Stock"].includes(value.availability) ? value.availability : "In Stock"} options={[["In Stock", "In Stock"], ["Out of Stock", "Out of Stock"]]} onChange={(next) => update("availability", next)} /><AdminSelect label="Category" value={value.category} options={categories.map((category) => [category.slug, category.name])} onChange={(next) => update("category", next)} /><AdminSelect label="Brand" value={value.brand} options={[["", "Unassigned"], ...brands.map((brand) => [brand.name, brand.name])]} onChange={(next) => update("brand", next)} /><AdminField label="Price" type="number" value={value.price === null ? "" : String(value.price)} onChange={(next) => update("price", next ? Number(next) : null)} placeholder="Leave blank for Request Quote" /><AdminField label="Product image filename" value={value.image ?? ""} onChange={(next) => update("image", next || null)} placeholder="e.g. hb-pencil.jpg" /><ProductImageUploader value={value} onChange={onChange} /><label className="sm:col-span-2"><span className="admin-label">Description</span><textarea value={value.description} onChange={(event) => update("description", event.target.value)} rows={4} className="input mt-2 resize-y" /></label><div className="sm:col-span-2"><p className="admin-label">Primary item specification</p><div className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 sm:grid-cols-2"><AdminField label="Item code" value={item.code} onChange={(next) => updateItem("code", next)} /><AdminField label="Description" value={item.description} onChange={(next) => updateItem("description", next)} /><AdminField label="Unit" value={item.unit} onChange={(next) => updateItem("unit", next)} /><AdminField label="Box" value={item.box} onChange={(next) => updateItem("box", next)} /><AdminField label="Carton" value={item.ctn} onChange={(next) => updateItem("ctn", next)} /></div></div></div><div className="flex flex-col-reverse gap-3 border-t border-slate-200 p-5 sm:flex-row sm:justify-end sm:p-6"><button onClick={onClose} className="btn-outline">Cancel</button><button onClick={() => onSave(value)} className="btn-primary"><Save className="h-4 w-4" /> Save product</button></div></div></div>;
+  return <div className="fixed inset-0 z-[60] overflow-y-auto bg-slate-950/50 p-4 sm:p-8"><div className="mx-auto max-w-3xl rounded-xl bg-white shadow-2xl"><div className="flex items-start justify-between gap-4 border-b border-slate-200 p-5 sm:p-6"><div><p className="text-sm font-medium text-brand">Product editor</p><h2 className="mt-1 text-xl font-semibold text-ink">{value.name || "Add product"}</h2></div><button onClick={onClose} className="rounded-md p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink" aria-label="Close product editor"><X className="h-5 w-5" /></button></div><div className="grid gap-5 p-5 sm:grid-cols-2 sm:p-6"><AdminField label="Product name" value={value.name} onChange={(next) => update("name", next)} /><AdminField label="Slug" value={value.slug} onChange={(next) => update("slug", next)} placeholder="Generated from product name if empty" /><AdminSelect label="Category" value={value.category} options={categories.map((category) => [category.slug, category.name])} onChange={(next) => update("category", next)} /><AdminField label="SKU" value={value.sku} onChange={(next) => update("sku", next)} /><AdminSelect label="Availability" value={["In Stock", "Out of Stock"].includes(value.availability) ? value.availability : "In Stock"} options={[["In Stock", "In Stock"], ["Out of Stock", "Out of Stock"]]} onChange={(next) => update("availability", next)} /><AdminSelect label="Brand" value={value.brand} options={[["", "Unassigned"], ...brands.map((brand) => [brand.name, brand.name])]} onChange={(next) => update("brand", next)} /><AdminField label="Price" type="number" value={value.price === null ? "" : String(value.price)} onChange={(next) => update("price", next ? Number(next) : null)} placeholder="Leave blank for Request Quote" /><AdminField label="Product image filename" value={value.image ?? ""} onChange={(next) => update("image", next || null)} placeholder="e.g. hb-pencil.jpg" /><ProductImageUploader value={value} onChange={onChange} /><label className="sm:col-span-2"><span className="admin-label">Description</span><textarea value={value.description} onChange={(event) => update("description", event.target.value)} rows={4} className="input mt-2 resize-y" /></label><div className="sm:col-span-2"><p className="admin-label">Primary item specification</p><div className="mt-2 grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 sm:grid-cols-2"><AdminField label="Item code" value={item.code} onChange={(next) => updateItem("code", next)} /><AdminField label="Description" value={item.description} onChange={(next) => updateItem("description", next)} /><AdminField label="Unit" value={item.unit} onChange={(next) => updateItem("unit", next)} /><AdminField label="Box" value={item.box} onChange={(next) => updateItem("box", next)} /><AdminField label="Carton" value={item.ctn} onChange={(next) => updateItem("ctn", next)} /></div></div></div><div className="flex flex-col-reverse gap-3 border-t border-slate-200 p-5 sm:flex-row sm:justify-end sm:p-6"><button onClick={onClose} className="btn-outline">Cancel</button><button onClick={() => onSave(value)} className="btn-primary"><Save className="h-4 w-4" /> Save product</button></div></div></div>;
 }
 
 function AdminField({ label, value, onChange, className = "", type = "text", placeholder }: { label: string; value: string; onChange: (value: string) => void; className?: string; type?: string; placeholder?: string }) {

@@ -4,7 +4,6 @@ Data source: `docs/BLUE CRYSTAL CATALOGUE NEW.pdf` (85 pages, kept out of git).
 Edit company details in `data/company.ts` and products in `data/catalog.ts`.
 
 ## Admin access
-
 `/admin` uses a branded sign-in page at `/admin/login` with cookie sessions
 (12-hour expiry, `HttpOnly` + `SameSite=Lax`, `Secure` in production).
 
@@ -17,6 +16,18 @@ Edit company details in `data/company.ts` and products in `data/catalog.ts`.
    - Pre-seed / reset any time: `npm run admin:create -- <username> <password>`
 4. Set the same variables in the production deployment environment; never use
    `NEXT_PUBLIC_` for these values.
+
+## Admin catalogue and company
+
+- Products are grouped by category in `/admin`; each group has its own
+  "Add to …" button that opens the editor with that category preselected.
+- Product edits PUT to `/api/admin/products` → Neon `site_content` row
+  `products`; company edits PUT to `/api/admin/company` → row `company`
+  (see `lib/catalog-storage.ts`). Both require a signed-in admin (401
+  otherwise) and return 503 without `DATABASE_URL`.
+- Public pages (header, footer, contact, homepage, JSON-LD) read the shared
+  company profile via `getSharedCompany()` with static fallback, so admin
+  edits go live without a redeploy.
 
 ## Admin product images
 

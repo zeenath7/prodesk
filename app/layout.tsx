@@ -4,7 +4,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { QuoteCartProvider } from "@/components/QuoteCartContext";
 import QuoteDrawer from "@/components/QuoteDrawer";
-import { company } from "@/data/company";
+import type { CompanyInfo } from "@/data/company";
+import { getSharedCompany } from "@/lib/catalog-storage";
+import { CompanyProvider } from "@/lib/company-context";
 import {
   MARKETING_PRODUCT_COUNT,
   SITE_KEYWORDS,
@@ -80,7 +82,8 @@ export const metadata: Metadata = {
   },
 };
 
-const structuredData = [
+function buildStructuredData(info: CompanyInfo) {
+  return [
   {
     "@context": "https://schema.org",
     "@type": "Store",
@@ -89,8 +92,8 @@ const structuredData = [
     url: SITE_URL,
     image: `${SITE_URL}/hero-stationery-home-v2.png`,
     logo: `${SITE_URL}/logo.png`,
-    email: company.email,
-    telephone: "+966540339239",
+    email: info.email,
+    telephone: info.phoneHref.replace(/^tel:/, ""),
     priceRange: "SAR",
     currenciesAccepted: "SAR",
     paymentAccepted: "Cash, Bank Transfer",
@@ -129,8 +132,10 @@ const structuredData = [
     },
   },
 ];
+}
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const sharedCompany = await getSharedCompany();
   return (
     <html lang="en" className={`${sans.variable} font-sans`} suppressHydrationWarning>
       <body className="min-h-screen bg-slate-50/50 text-slate-800 antialiased">
@@ -140,11 +145,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to main content
         </a>
+        <CompanyProvider value={sharedCompany}>
         <QuoteCartProvider>
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+              __html: JSON.stringify(buildStructuredData(sharedCompany)).replace(/</g, "\\u003c"),
             }}
           />
           <Header productCountLabel={MARKETING_PRODUCT_COUNT} />
@@ -152,6 +158,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <QuoteDrawer productCount={MARKETING_PRODUCT_COUNT} />
         </QuoteCartProvider>
+        </CompanyProvider>
       </body>
     </html>
   );

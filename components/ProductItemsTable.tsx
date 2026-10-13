@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Plus, Check, ShoppingBag, MessageCircle } from "lucide-react";
 import { useQuoteCart } from "./QuoteCartContext";
+import { useCompany } from "@/lib/company-context";
 import { waLink } from "@/lib/utils";
 import type { Product, ProductItem } from "@/types";
 
@@ -16,6 +17,7 @@ const dash = (v: string) => (v && v.replace(/\*/g, "").trim() ? v : "—");
 
 export default function ProductItemsTable({ product, items }: Props) {
   const { addItem } = useQuoteCart();
+  const company = useCompany();
   const [addedCodes, setAddedCodes] = useState<Record<string, boolean>>({});
 
   const handleAddItem = (item: ProductItem) => {
@@ -103,7 +105,8 @@ export default function ProductItemsTable({ product, items }: Props) {
 
                       <a
                         href={waLink(
-                          `Hello ProDesk, please give me a quote for ${product.name} (Code: ${it.code}, Desc: ${it.description}).`
+                          `Hello ProDesk, please give me a quote for ${product.name} (Code: ${it.code}, Desc: ${it.description}).`,
+                          company.whatsapp
                         )}
                         target="_blank"
                         rel="noopener noreferrer"

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import ContactSection from "@/components/ContactSection";
-import { company } from "@/data/company";
 
 export const metadata = {
   title: "Contact & Showroom Locations | ProDesk Office Stationery Riyadh",

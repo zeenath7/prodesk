@@ -4,12 +4,13 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { X, Trash2, Plus, Minus, Send, FileText, ShoppingBag, ArrowRight } from "lucide-react";
 import { useQuoteCart } from "./QuoteCartContext";
-import { company } from "@/data/company";
+import { useCompany } from "@/lib/company-context";
 import ProductPhoto from "@/components/ProductPhoto";
 
 export default function QuoteDrawer({ productCount }: { productCount: string }) {
   const { items, removeItem, updateQuantity, clearCart, isDrawerOpen, closeDrawer, totalCount } =
     useQuoteCart();
+  const company = useCompany();
 
   // Close on ESC
   useEffect(() => {

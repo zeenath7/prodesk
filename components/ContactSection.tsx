@@ -1,8 +1,9 @@
 import { Phone, Mail, MapPin, Clock, MessageCircle, Globe, Building2, Navigation, CheckCircle2 } from "lucide-react";
-import { company } from "@/data/company";
+import { getSharedCompany } from "@/lib/catalog-storage";
 import { waLink } from "@/lib/utils";
 
-export default function ContactSection() {
+export default async function ContactSection() {
+  const company = await getSharedCompany();
   return (
     <div className="space-y-10">
       {/* Showroom & Warehouse Hub Cards */}
@@ -60,7 +61,7 @@ export default function ContactSection() {
               <span>Get Directions</span>
             </a>
             <a
-              href={waLink("Hello ProDesk, I would like to visit the Talha Bin Malik showroom.")}
+              href={waLink("Hello ProDesk, I would like to visit the Talha Bin Malik showroom.", company.whatsapp)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-10 items-center gap-1.5 rounded-md bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors"
@@ -124,7 +125,7 @@ export default function ContactSection() {
               <span>Call Branch 2</span>
             </a>
             <a
-              href={waLink("Hello ProDesk, I would like to inquire about bulk carton pickup at the Al Hawari branch.")}
+              href={waLink("Hello ProDesk, I would like to inquire about bulk carton pickup at the Al Hawari branch.", company.whatsapp)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-10 items-center gap-1.5 rounded-md bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors"

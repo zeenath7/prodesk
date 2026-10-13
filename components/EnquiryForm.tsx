@@ -17,13 +17,14 @@ import {
   Clock,
 } from "lucide-react";
 import { useQuoteCart } from "./QuoteCartContext";
-import { company } from "@/data/company";
+import { useCompany } from "@/lib/company-context";
 import ProductPhoto from "@/components/ProductPhoto";
 
 export default function EnquiryForm() {
   const searchParams = useSearchParams();
   const urlProduct = searchParams?.get("product") ?? "";
   const { items, removeItem, updateQuantity, clearCart, totalCount } = useQuoteCart();
+  const company = useCompany();
 
   const [formData, setFormData] = useState({
     name: "",

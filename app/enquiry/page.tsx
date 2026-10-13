@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { ChevronRight, FileSpreadsheet, ShieldCheck, Clock, MapPin } from "lucide-react";
 import EnquiryForm from "@/components/EnquiryForm";
-import { company } from "@/data/company";
 
 export const metadata = {
   title: "Request a Wholesale Quote (RFQ) | ProDesk Office Stationery Riyadh",
