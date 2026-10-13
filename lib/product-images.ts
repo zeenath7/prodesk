@@ -21,17 +21,23 @@ export async function ensureProductImagesTable(sql: Sql): Promise<void> {
 export async function getProductImageMap(): Promise<Record<string, string>> {
   const sql = getSql();
   if (!sql) return {};
-  try {
-    await ensureProductImagesTable(sql);
-    const rows = await sql`SELECT slug, image_url FROM product_images`;
-    const map: Record<string, string> = {};
-    for (const row of rows as { slug: string; image_url: string }[]) {
-      map[row.slug] = row.image_url;
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    try {
+      await ensureProductImagesTable(sql);
+      const rows = await sql`SELECT slug, image_url FROM product_images`;
+      const map: Record<string, string> = {};
+      for (const row of rows as { slug: string; image_url: string }[]) {
+        map[row.slug] = row.image_url;
+      }
+      return map;
+    } catch (error) {
+      if (attempt === 2) {
+        console.warn("[product-images] map fetch failed, rendering without overrides:", error instanceof Error ? error.message : error);
+        return {};
+      }
     }
-    return map;
-  } catch {
-    return {};
   }
+  return {};
 }
 
 export async function getProductImage(slug: string): Promise<string | null> {
