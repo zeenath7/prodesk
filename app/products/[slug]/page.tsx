@@ -8,13 +8,16 @@ import ProductCard from "@/components/ProductCard";
 import ProductDetailActions from "@/components/ProductDetailActions";
 import ProductItemsTable from "@/components/ProductItemsTable";
 import ProductPhoto, { getProductPhotoAsset } from "@/components/ProductPhoto";
-import { products, getCategory } from "@/data/catalog";
+import { getCategory } from "@/data/catalog";
+import { getSharedProducts } from "@/lib/catalog-storage";
 import { getProductImageMap } from "@/lib/product-images";
 import { formatPrice } from "@/lib/utils";
 import type { Metadata } from "next";
 
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+export const dynamic = "force-dynamic";
+
+export async function generateStaticParams() {
+  return (await getSharedProducts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -23,7 +26,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = products.find((item) => item.slug === slug);
+  const product = (await getSharedProducts()).find((item) => item.slug === slug);
   if (!product) return { title: "Product Not Found | ProDesk" };
 
   const category = getCategory(product.category);
@@ -53,6 +56,7 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const products = await getSharedProducts();
   const p = products.find((x) => x.slug === slug);
   if (!p) notFound();
 

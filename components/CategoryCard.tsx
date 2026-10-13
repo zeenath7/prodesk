@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Category } from "@/types";
-import { getProductsByCategory, products as allProducts } from "@/data/catalog";
+import type { Product } from "@/types";
 import ProductPhoto from "@/components/ProductPhoto";
 
 const representativeProductSlugs: Record<string, string> = {
@@ -9,13 +9,13 @@ const representativeProductSlugs: Record<string, string> = {
   rolls: "embossed-rolls",
 };
 
-export default function CategoryCard({ category, imageOverrides = {} }: { category: Category; imageOverrides?: Record<string, string> }) {
-  const products = getProductsByCategory(category.slug);
-  const representativeProduct = allProducts.find(
+export default function CategoryCard({ category, products, imageOverrides = {} }: { category: Category; products: Product[]; imageOverrides?: Record<string, string> }) {
+  const categoryProducts = products.filter((product) => product.category === category.slug);
+  const representativeProduct = products.find(
     (product) => product.slug === representativeProductSlugs[category.slug],
   );
-  const imageProduct = representativeProduct ?? products.find((product) => product.image);
-  const count = products.length;
+  const imageProduct = representativeProduct ?? categoryProducts.find((product) => product.image);
+  const count = categoryProducts.length;
 
   return (
     <Link

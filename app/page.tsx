@@ -8,6 +8,9 @@ import { categories, brands, products } from "@/data/catalog";
 import { MARKETING_PRODUCT_COUNT } from "@/lib/seo";
 import { getProductImageMap } from "@/lib/product-images";
 import { waLink } from "@/lib/utils";
+import { getSharedProducts } from "@/lib/catalog-storage";
+
+export const dynamic = "force-dynamic";
 
 const supplyServices = [
   { icon: Boxes, title: "Master carton wholesale", text: "Carton rates and volume price breaks for resellers, retail stores and contractors." },
@@ -33,6 +36,7 @@ function Heading({ title, sub, href, link }: { title: string; sub?: string; href
 }
 
 export default async function Home() {
+  const sharedProducts = await getSharedProducts();
   const imageOverrides = await getProductImageMap();
   return (
     <main className="space-y-14 pb-16 sm:space-y-16">
@@ -43,7 +47,7 @@ export default async function Home() {
         <Heading title="Shop the catalogue" sub={`${MARKETING_PRODUCT_COUNT} products in ${categories.length} categories. Pick a category to see everything in it.`} href="/products" link={`View all ${MARKETING_PRODUCT_COUNT} products`} />
         <nav aria-label="Product categories" className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
           {categories.map((category) => (
-            <CategoryCard key={category.slug} category={category} imageOverrides={imageOverrides} />
+            <CategoryCard key={category.slug} category={category} products={sharedProducts} imageOverrides={imageOverrides} />
           ))}
         </nav>
 

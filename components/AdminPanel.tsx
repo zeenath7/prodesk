@@ -9,7 +9,6 @@ import { company } from "@/data/company";
 import type { Product } from "@/types";
 import { getProductPhotoAsset } from "@/components/ProductPhoto";
 
-const PRODUCTS_KEY = "prodesk-admin-products";
 const COMPANY_KEY = "prodesk-admin-company";
 
 type CompanyDraft = Pick<typeof company, "name" | "associate" | "positioning" | "phone" | "email" | "website" | "address" | "branch2" | "branch2Phone" | "hours">;
@@ -49,10 +48,17 @@ export default function AdminPanel() {
   const [editing, setEditing] = useState<Product | null>(null);
   const [query, setQuery] = useState("");
   const [saved, setSaved] = useState(false);
+  const [storageError, setStorageError] = useState("");
   const [companyDraft, setCompanyDraft] = useState<CompanyDraft>(company);
 
   useEffect(() => {
-    setItems(readDraft(PRODUCTS_KEY, products));
+    fetch("/api/admin/products", { cache: "no-store" })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error ?? "Could not load shared products.");
+        if (Array.isArray(data.products)) setItems(data.products as Product[]);
+      })
+      .catch((error: unknown) => setStorageError(error instanceof Error ? error.message : "Could not load shared products."));
     setCompanyDraft(readDraft(COMPANY_KEY, company));
   }, []);
 
@@ -62,10 +68,23 @@ export default function AdminPanel() {
     return items.filter((product) => `${product.name} ${product.sku} ${product.brand} ${product.category}`.toLowerCase().includes(value));
   }, [items, query]);
 
-  function saveProducts(next: Product[]) {
-    setItems(next);
-    window.localStorage.setItem(PRODUCTS_KEY, JSON.stringify(next));
-    flashSaved();
+  async function saveProducts(next: Product[]): Promise<boolean> {
+    setStorageError("");
+    try {
+      const response = await fetch("/api/admin/products", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ products: next }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "Could not save products.");
+      setItems(next);
+      flashSaved();
+      return true;
+    } catch (error) {
+      setStorageError(error instanceof Error ? error.message : "Could not save products.");
+      return false;
+    }
   }
 
   function saveCompany() {
@@ -78,16 +97,15 @@ export default function AdminPanel() {
     window.setTimeout(() => setSaved(false), 2200);
   }
 
-  function saveProduct(product: Product) {
+  async function saveProduct(product: Product) {
     const normalized = { ...product, slug: product.slug || makeSlug(product.name) };
     const exists = items.some((item) => item.slug === normalized.slug);
-    saveProducts(exists ? items.map((item) => item.slug === normalized.slug ? normalized : item) : [normalized, ...items]);
-    setEditing(null);
+    if (await saveProducts(exists ? items.map((item) => item.slug === normalized.slug ? normalized : item) : [normalized, ...items])) setEditing(null);
   }
 
   function removeProduct(slug: string) {
-    if (!window.confirm("Remove this product from your local admin draft?")) return;
-    saveProducts(items.filter((item) => item.slug !== slug));
+    if (!window.confirm("Remove this product from the shared catalogue?")) return;
+    void saveProducts(items.filter((item) => item.slug !== slug));
   }
 
   async function signOut() {
@@ -117,9 +135,10 @@ export default function AdminPanel() {
 
       <div className="container-x py-8 sm:py-10">
         <div className="mb-6 flex flex-col gap-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950 sm:flex-row sm:items-center sm:justify-between">
-          <p><strong>Secured workspace:</strong> signed in with a Neon-backed admin session (12-hour expiry). Catalogue edits below are still local browser drafts — connect shared content storage before multi-device publishing.</p>
+          <p><strong>Secured workspace:</strong> signed in with a Neon-backed admin session (12-hour expiry). Product changes are saved to the shared Neon catalogue.</p>
           {saved && <span className="inline-flex shrink-0 items-center gap-1.5 font-semibold text-emerald-700"><Check className="h-4 w-4" /> Saved</span>}
         </div>
+        {storageError && <p role="alert" className="mb-6 rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">{storageError}</p>}
 
         <div className="grid gap-6 lg:grid-cols-[15rem_minmax(0,1fr)]">
           <aside className="h-fit rounded-lg border border-slate-200 bg-white p-2 shadow-sm">

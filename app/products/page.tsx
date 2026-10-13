@@ -2,10 +2,13 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { Package, Sparkles, ChevronRight, Layers } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
-import { products, getCategory, getProductsByCategory } from "@/data/catalog";
+import { getCategory } from "@/data/catalog";
+import { getSharedProducts } from "@/lib/catalog-storage";
 import { MARKETING_PRODUCT_COUNT } from "@/lib/seo";
 import { getProductImageMap } from "@/lib/product-images";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   searchParams,
@@ -13,6 +16,7 @@ export async function generateMetadata({
   searchParams: Promise<{ category?: string | string[] }>;
 }): Promise<Metadata> {
   const { category } = await searchParams;
+  const products = await getSharedProducts();
   const categorySlug = Array.isArray(category) ? category[0] : category;
   const selectedCategory = categorySlug ? getCategory(categorySlug) : undefined;
 
@@ -21,7 +25,7 @@ export async function generateMetadata({
       ? `${selectedCategory.name} Products | ProDesk Riyadh`
       : "Office & School Supplies Catalogue | ProDesk Saudi Arabia",
     description: selectedCategory
-      ? `${selectedCategory.description} Browse ${getProductsByCategory(selectedCategory.slug).length} products and request wholesale pricing from ProDesk in Riyadh.`
+      ? `${selectedCategory.description} Browse ${products.filter((product) => product.category === selectedCategory.slug).length} products and request wholesale pricing from ProDesk in Riyadh.`
       : `Browse ${MARKETING_PRODUCT_COUNT} office and school stationery products, check item codes and sizes, and request wholesale pricing from ProDesk in Riyadh, Saudi Arabia.`,
     alternates: { canonical: "/products" },
     ...(categorySlug ? { robots: { index: false, follow: true } } : {}),
@@ -34,10 +38,11 @@ export default async function ProductsPage({
   searchParams: Promise<{ category?: string | string[] }>;
 }) {
   const { category: categoryParam } = await searchParams;
+  const products = await getSharedProducts();
   const categorySlug = Array.isArray(categoryParam) ? categoryParam[0] : categoryParam;
   const selectedCategory = categorySlug ? getCategory(categorySlug) : undefined;
   const selectedProducts = selectedCategory
-    ? getProductsByCategory(selectedCategory.slug)
+    ? products.filter((product) => product.category === selectedCategory.slug)
     : products;
   const selectedCategoryName =
     selectedCategory?.name === "Lamination Pouch"
@@ -97,7 +102,7 @@ export default async function ProductsPage({
             </div>
           }
         >
-          <ProductGrid products={products} initialCategory={selectedCategory?.slug ?? ""} cataloguePage imageOverrides={imageOverrides} />
+          <ProductGrid products={selectedProducts} initialCategory={selectedCategory?.slug ?? ""} cataloguePage imageOverrides={imageOverrides} />
         </Suspense>
       </section>
     </main>

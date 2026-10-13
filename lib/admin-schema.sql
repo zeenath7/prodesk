@@ -8,3 +8,10 @@ CREATE TABLE IF NOT EXISTS admin_users (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   last_login_at TIMESTAMPTZ
 );
+
+-- Shared catalogue content (created automatically by lib/catalog-storage.ts).
+CREATE TABLE IF NOT EXISTS site_content (
+  content_key TEXT PRIMARY KEY,
+  content JSONB NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

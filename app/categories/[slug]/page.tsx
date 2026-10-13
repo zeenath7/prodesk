@@ -3,9 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight, ArrowLeft, Layers, Tag } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
-import { categories, getCategory, getProductsByCategory } from "@/data/catalog";
+import { categories, getCategory } from "@/data/catalog";
 import { getProductImageMap } from "@/lib/product-images";
+import { getSharedProducts } from "@/lib/catalog-storage";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
@@ -17,9 +20,10 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const products = await getSharedProducts();
   const category = getCategory(slug);
   if (!category) return { title: "Category Not Found | ProDesk" };
-  const count = getProductsByCategory(category.slug).length;
+  const count = products.filter((product) => product.category === category.slug).length;
 
   return {
     title: `${category.name} Wholesale Supplies in Saudi Arabia | ProDesk`,
@@ -41,10 +45,11 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const allProducts = await getSharedProducts();
   const cat = getCategory(slug);
   if (!cat) notFound();
 
-  const items = getProductsByCategory(cat.slug);
+  const items = allProducts.filter((product) => product.category === cat.slug);
   const otherCategories = categories.filter((c) => c.slug !== cat.slug);
   const imageOverrides = await getProductImageMap();
 
