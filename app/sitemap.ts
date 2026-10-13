@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
-import { categories, products } from "@/data/catalog";
-import { getProductPhotoAsset } from "@/components/ProductPhoto";
 import { SITE_URL } from "@/lib/seo";
 
+// Product detail and category pages carry noindex metadata, so they are
+// intentionally excluded here — only indexable business pages are listed.
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
@@ -26,18 +26,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.6,
     },
-    ...categories.map((category) => ({
-      url: `${SITE_URL}/categories/${category.slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    })),
-    ...products.map((product) => ({
-      url: `${SITE_URL}/products/${product.slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-      images: [`${SITE_URL}${getProductPhotoAsset(product.slug)}`],
-    })),
   ];
 }
