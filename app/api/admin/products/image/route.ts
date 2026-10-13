@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { del, put } from "@vercel/blob";
 import { ADMIN_SESSION_COOKIE, verifyAdminSession } from "@/lib/admin-session";
 import { getSql } from "@/lib/admin-auth";
+import { products } from "@/data/catalog";
 import {
   deleteProductImage,
   ensureProductImagesTable,
@@ -36,6 +38,22 @@ function storageUnavailable(): NextResponse {
     },
     { status: 503 },
   );
+}
+
+/**
+ * Product/listing pages are statically prerendered, so purge them after an
+ * image change — otherwise the new photo only appears after the next deploy.
+ */
+function revalidateProductPages(slug: string): void {
+  try {
+    revalidatePath(`/products/${slug}`);
+    revalidatePath("/products");
+    revalidatePath("/");
+    const category = products.find((product) => product.slug === slug)?.category;
+    if (category) revalidatePath(`/categories/${category}`);
+  } catch {
+    // Revalidation is best-effort; the upload itself already succeeded.
+  }
 }
 
 /** GET ?slug=… → { url } — lets the editor prefill the persisted image. */
@@ -119,6 +137,7 @@ export async function POST(request: NextRequest) {
   if (previous && previous !== url) {
     await del(previous, { token }).catch(() => undefined);
   }
+  revalidateProductPages(slug);
 
   const response = NextResponse.json({ url });
   response.headers.set("Cache-Control", "no-store");
@@ -140,6 +159,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const previous = await deleteProductImage(slug);
     if (previous) await del(previous, { token }).catch(() => undefined);
+    revalidateProductPages(slug);
   } catch {
     return NextResponse.json(
       { error: "Admin database is unavailable. Try again later." },
