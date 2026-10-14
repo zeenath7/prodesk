@@ -112,6 +112,7 @@ export default function ProductItemsTable({ product, items }: Props) {
                         )}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`Request a WhatsApp quote for ${product.name}, item code ${it.code}`}
                         className="rounded-md border border-slate-200 p-1.5 text-slate-500 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
                         title="Inquire on WhatsApp"
                       >

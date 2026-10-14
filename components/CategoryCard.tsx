@@ -4,6 +4,7 @@ import type { Product } from "@/types";
 import ProductPhoto from "@/components/ProductPhoto";
 
 const representativeProductSlugs: Record<string, string> = {
+  "desktop-accessories": "metal-desk-set",
   "lamination-pouch": "lamination-pouch",
   boards: "glass-board",
   rolls: "embossed-rolls",
