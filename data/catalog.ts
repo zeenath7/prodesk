@@ -212,11 +212,19 @@ const categoryAliases: Record<string, string> = {
   "binding-comb-and-spine-bar": "spine-bar",
 };
 
+const slugifyCategory = (value: string) => value.trim().toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+export const normalizeCategorySlug = (value: string) => {
+  const cleaned = slugifyCategory(value);
+  const category = categories.find((entry) => slugifyCategory(entry.name) === cleaned || entry.slug === cleaned);
+  return category?.slug ?? categoryAliases[cleaned] ?? cleaned;
+};
+
 export const getProductCategorySlug = (product: Pick<Product, "category">) =>
-  categoryAliases[product.category] ?? product.category;
+  normalizeCategorySlug(product.category);
 
 export const getProductsByCategory = (slug: string) =>
   products.filter((product) => getProductCategorySlug(product) === slug);
 
 export const getCategory = (slug: string) =>
-  categories.find((category) => category.slug === (categoryAliases[slug] ?? slug));
+  categories.find((category) => category.slug === normalizeCategorySlug(slug));

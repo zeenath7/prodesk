@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { products } from "@/data/catalog";
+import { getProductCategorySlug } from "@/data/catalog";
 import { company, type CompanyInfo } from "@/data/company";
 import type { Product } from "@/types";
 import { getSql } from "@/lib/admin-auth";
@@ -14,11 +15,11 @@ export async function getSharedProducts(): Promise<Product[]> {
     const value = rows[0]?.content as Product[] | undefined;
     if (!Array.isArray(value)) return products;
     // Repair products saved before the category slug was corrected in the source catalogue.
-    const normalized = value.map((product) =>
-      product.category === "binding-comb-and-spine-bar"
-        ? { ...product, category: "spine-bar" }
-        : product,
-    );
+    const normalized = value.map((product) => {
+      const category = getProductCategorySlug(product);
+      const items = Array.isArray(product.items) ? product.items : [];
+      return category !== product.category || items !== product.items ? { ...product, category, items } : product;
+    });
     if (normalized.some((product, index) => product !== value[index])) {
       await saveSharedProducts(normalized);
     }

@@ -20,8 +20,9 @@ export default function ProductItemsTable({ product, items }: Props) {
   const company = useCompany();
   const [addedCodes, setAddedCodes] = useState<Record<string, boolean>>({});
 
-  const handleAddItem = (item: ProductItem) => {
+  const handleAddItem = (item: ProductItem, index: number) => {
     addItem({
+      id: `${product.slug}-${item.code || "spec"}-${index}`,
       productSlug: product.slug,
       productName: product.name,
       itemCode: item.code,
@@ -33,9 +34,10 @@ export default function ProductItemsTable({ product, items }: Props) {
       image: product.image || null,
     });
 
-    setAddedCodes((prev) => ({ ...prev, [item.code]: true }));
+    const key = `${item.code}-${index}`;
+    setAddedCodes((prev) => ({ ...prev, [key]: true }));
     setTimeout(() => {
-      setAddedCodes((prev) => ({ ...prev, [item.code]: false }));
+      setAddedCodes((prev) => ({ ...prev, [key]: false }));
     }, 2000);
   };
 
@@ -58,7 +60,7 @@ export default function ProductItemsTable({ product, items }: Props) {
           </thead>
           <tbody className="divide-y divide-slate-100">
             {items.map((it, i) => {
-              const isAdded = Boolean(addedCodes[it.code]);
+              const isAdded = Boolean(addedCodes[`${it.code}-${i}`]);
               return (
                 <tr key={`${it.code}-${i}`} className="hover:bg-slate-50/70 transition-colors">
                   <td className="whitespace-nowrap px-4 py-3.5 font-mono text-xs font-bold text-ink">
@@ -82,7 +84,7 @@ export default function ProductItemsTable({ product, items }: Props) {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         type="button"
-                        onClick={() => handleAddItem(it)}
+                        onClick={() => handleAddItem(it, i)}
                         className={`inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
                           isAdded
                             ? "bg-emerald-600 text-white"

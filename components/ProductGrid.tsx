@@ -90,8 +90,8 @@ export default function ProductGrid({
   const grid = list.length === 0 ? (
     <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50/50 py-16 text-center">
       <Package className="mx-auto mb-3 h-12 w-12 text-slate-300" />
-      <h3 className="text-lg font-bold text-ink">No matching products</h3>
-      <p className="mx-auto mt-1 max-w-sm text-sm text-slate-500">Try another word or item code, or clear the filters.</p>
+      <h3 className="text-lg font-bold text-ink">{category ? "No products available in this category" : "No matching products"}</h3>
+      <p className="mx-auto mt-1 max-w-sm text-sm text-slate-500">{category ? "This category currently has no assigned products." : "Try another word or item code, or clear the filters."}</p>
       <button type="button" onClick={reset} className="btn-primary mt-5 text-xs">Clear filters</button>
     </div>
   ) : (

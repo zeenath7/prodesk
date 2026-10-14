@@ -111,7 +111,7 @@ export default async function CategoryPage({
             </div>
           }
         >
-          <ProductGrid products={items} showFilters={true} initialCategory={cat.slug} imageOverrides={imageOverrides} />
+          <ProductGrid products={allProducts} showFilters={true} initialCategory={cat.slug} imageOverrides={imageOverrides} />
         </Suspense>
 
         {/* Other Categories Selector */}
