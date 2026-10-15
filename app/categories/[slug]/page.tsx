@@ -29,7 +29,16 @@ export async function generateMetadata({
     title: `${category.name} Wholesale Supplies in Saudi Arabia | ProDesk`,
     description: `${category.description} Browse ${count} ${category.name.toLowerCase()} products from ProDesk in Riyadh and request wholesale pricing across Saudi Arabia.`,
     alternates: { canonical: `/categories/${category.slug}` },
-    robots: { index: false, follow: true },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph: {
       type: "website",
       title: `${category.name} | ProDesk Office Stationery`,

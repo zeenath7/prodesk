@@ -39,7 +39,16 @@ export async function generateMetadata({
     title: `${product.name} in Saudi Arabia | ProDesk`,
     description,
     alternates: { canonical: `/products/${product.slug}` },
-    robots: { index: false, follow: true },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph: {
       type: "website",
       title: `${product.name} | ProDesk Office Stationery`,
