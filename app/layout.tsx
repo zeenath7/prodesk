@@ -19,9 +19,10 @@ import "./globals.css";
 const sans = Instrument_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 const defaultDescription =
-  "Shop office and school stationery at ProDesk, a wholesale and retail stationery supplier in Riyadh, Saudi Arabia. Explore stationery products and bulk supply solutions for businesses, schools, and retailers across the Kingdom.";
+  "ProDesk is a stationery supplier in Riyadh, Saudi Arabia, offering office supplies, school stationery, and wholesale solutions for businesses, schools, and retailers.";
 
-const defaultTitle = "ProDesk Office Stationery | Wholesale Supplier in Riyadh, Saudi Arabia";
+const defaultTitle =
+  "ProDesk Office Stationery | Wholesale & Retail Supplier in Riyadh";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
