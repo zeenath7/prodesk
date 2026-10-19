@@ -3,7 +3,7 @@ import { categories, products } from "@/data/catalog";
 export const SITE_URL = "https://prodeskonline.com";
 export const SITE_NAME = "ProDesk Office Stationery";
 export const SITE_LOCALE = "en_SA";
-export const SITE_HTML_LANG = "en";
+export const SITE_HTML_LANG = "en-SA";
 
 /** Live catalogue size — single source of truth so UI copy, metadata and sitemap never drift. */
 export const PRODUCT_COUNT = products.length;

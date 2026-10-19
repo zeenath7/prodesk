@@ -10,6 +10,7 @@ import { CompanyProvider } from "@/lib/company-context";
 import {
   MARKETING_PRODUCT_COUNT,
   SITE_KEYWORDS,
+  SITE_HTML_LANG,
   SITE_LOCALE,
   SITE_NAME,
   SITE_URL,
@@ -134,7 +135,7 @@ function buildStructuredData(info: CompanyInfo) {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const sharedCompany = await getSharedCompany();
   return (
-    <html lang="en" className={`${sans.variable} font-sans`} suppressHydrationWarning>
+    <html lang={SITE_HTML_LANG} className={`${sans.variable} font-sans`} suppressHydrationWarning>
       <body className="min-h-screen bg-slate-50/50 text-slate-800 antialiased">
         <a
           href="#main-content"
