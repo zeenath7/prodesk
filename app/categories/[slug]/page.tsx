@@ -22,7 +22,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const products = await getSharedProducts();
   const category = getCategory(slug);
-  if (!category) return { title: "Category Not Found | ProDesk" };
+  if (!category) {
+    return {
+      title: "Category Not Found | ProDesk",
+      robots: { index: false, follow: true },
+    };
+  }
   const count = products.filter((product) => product.category === category.slug).length;
 
   return {
@@ -30,10 +35,10 @@ export async function generateMetadata({
     description: `${category.description} Browse ${count} ${category.name.toLowerCase()} products from ProDesk in Riyadh and request wholesale pricing across Saudi Arabia.`,
     alternates: { canonical: `/categories/${category.slug}` },
     robots: {
-      index: true,
+      index: false,
       follow: true,
       googleBot: {
-        index: true,
+        index: false,
         follow: true,
         "max-image-preview": "large",
         "max-snippet": -1,

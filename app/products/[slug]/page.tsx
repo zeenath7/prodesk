@@ -27,7 +27,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const product = (await getSharedProducts()).find((item) => item.slug === slug);
-  if (!product) return { title: "Product Not Found | ProDesk" };
+  if (!product) {
+    return {
+      title: "Product Not Found | ProDesk",
+      robots: { index: false, follow: true },
+    };
+  }
 
   const category = getCategory(product.category);
   const description = `View sizes, item codes, and wholesale quote details for ${product.name}${category ? ` in ${category.name.toLowerCase()}` : ""} from ProDesk Office Stationery in Riyadh.`;
@@ -40,10 +45,10 @@ export async function generateMetadata({
     description,
     alternates: { canonical: `/products/${product.slug}` },
     robots: {
-      index: true,
+      index: false,
       follow: true,
       googleBot: {
-        index: true,
+        index: false,
         follow: true,
         "max-image-preview": "large",
         "max-snippet": -1,

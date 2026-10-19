@@ -38,10 +38,6 @@ export const metadata: Metadata = {
     shortcut: [{ url: `${SITE_URL}/favicon.ico`, type: "image/x-icon" }],
     apple: [{ url: `${SITE_URL}/apple-icon.png`, sizes: "180x180", type: "image/png" }],
   },
-  alternates: {
-    canonical: "/",
-    languages: { "en-SA": "/" },
-  },
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
@@ -65,10 +61,10 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/hero-stationery-home-v2.png`],
   },
   robots: {
-    index: true,
+    index: false,
     follow: true,
     googleBot: {
-      index: true,
+      index: false,
       follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,

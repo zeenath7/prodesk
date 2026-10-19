@@ -8,6 +8,7 @@ export const metadata = {
   description:
     "Request custom wholesale and bulk pricing for corporate offices, schools, and retailers. Same-day quotation turnaround with official VAT invoicing across Saudi Arabia.",
   alternates: { canonical: "/enquiry" },
+  robots: { index: false, follow: true },
 };
 
 export default function EnquiryPage() {

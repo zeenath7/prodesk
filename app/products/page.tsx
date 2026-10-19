@@ -28,7 +28,7 @@ export async function generateMetadata({
       ? `${selectedCategory.description} Browse ${products.filter((product) => product.category === selectedCategory.slug).length} products and request wholesale pricing from ProDesk in Riyadh.`
       : `Browse ${MARKETING_PRODUCT_COUNT} office and school stationery products, check item codes and sizes, and request wholesale pricing from ProDesk in Riyadh, Saudi Arabia.`,
     alternates: { canonical: "/products" },
-    ...(categorySlug ? { robots: { index: false, follow: true } } : {}),
+    robots: { index: false, follow: true },
   };
 }
 

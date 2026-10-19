@@ -10,8 +10,26 @@ import { MARKETING_PRODUCT_COUNT } from "@/lib/seo";
 import { getProductImageMap } from "@/lib/product-images";
 import { waLink } from "@/lib/utils";
 import { getSharedProducts } from "@/lib/catalog-storage";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+    languages: { "en-SA": "/" },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
 
 const supplyServices = [
   { icon: Boxes, title: "Master carton wholesale", text: "Carton rates and volume price breaks for resellers, retail stores and contractors." },

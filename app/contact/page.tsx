@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import ContactSection from "@/components/ContactSection";
-
-export const metadata = {
+import type { Metadata } from "next";
+export const metadata: Metadata = {
   title: "Contact & Showroom Locations | ProDesk Office Stationery Riyadh",
   description:
     "Visit our two Al-Malaz showroom and warehouse hubs in Riyadh or get in touch for corporate accounts, wholesale pricing, and tender inquiries in Saudi Arabia.",
   alternates: { canonical: "/contact" },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
-
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-slate-50/40 py-10 sm:py-14">
