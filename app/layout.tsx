@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   publisher: SITE_NAME,
   formatDetection: { email: true, address: true, telephone: true },
   icons: {
-    icon: [{ url: `${SITE_URL}/icon.png`, sizes: "64x64", type: "image/png" }],
+    icon: [{ url: `${SITE_URL}/icon.png`, sizes: "192x192", type: "image/png" }],
     shortcut: [{ url: `${SITE_URL}/favicon.ico`, type: "image/x-icon" }],
     apple: [{ url: `${SITE_URL}/apple-icon.png`, sizes: "180x180", type: "image/png" }],
   },
