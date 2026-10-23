@@ -84,8 +84,40 @@ function buildStructuredData(info: CompanyInfo) {
   return [
   {
     "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_URL}#organization`,
+    name: SITE_NAME,
+    alternateName: ["ProDesk", "Blue Crystal Stationery"],
+    description:
+      "ProDesk (formerly Blue Crystal Stationery) is a wholesale and retail stationery supplier in Riyadh, Saudi Arabia, serving offices, schools, and retailers across the Kingdom since 2011.",
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo.png`,
+    email: info.email,
+    telephone: info.phone.replace(/^tel:/, ""),
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Talha Bin Malik Street, Al-Malaz Dist",
+      postOfficeBoxNumber: "12831",
+      addressLocality: "Riyadh",
+      addressRegion: "Riyadh Province",
+      postalCode: "12831",
+      addressCountry: "SA",
+    },
+    geo: { "@type": "GeoCoordinates", latitude: 24.675694, longitude: 46.728556 },
+    areaServed: [
+      { "@type": "Country", name: "Saudi Arabia" },
+      { "@type": "City", name: "Riyadh" },
+    ],
+    brand: [
+      { "@type": "Brand", name: "ProDesk" },
+      { "@type": "Brand", name: "Azmak" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "Store",
     "@id": `${SITE_URL}#store`,
+    parentOrganization: { "@id": `${SITE_URL}#organization` },
     name: SITE_NAME,
     url: SITE_URL,
     image: `${SITE_URL}/hero-stationery-home-v2.png`,
